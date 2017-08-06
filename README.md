@@ -14,13 +14,13 @@ This ASP.NET Core MVC sample shows how to connect to Microsoft Graph using deleg
 It uses OpenID Connect for sign in, [Azure AD Authentication Library for .NET](https://github.com/AzureAD/azure-activedirectory-library-for-dotnet) (ADAL) to obtain an access token using the [client credentials grant](https://tools.ietf.org/html/rfc6749#section-4.4), and the [Microsoft Graph Client Library for .NET](https://github.com/microsoftgraph/msgraph-sdk-dotnet) (SDK) to interact with Microsoft Graph.  
 The sample uses only delegate permissions, therefore it does not require admin consent.
 
-## Using the Microsoft Graph Webhooks Sample
+## Using the Microsoft Graph Connect Sample
 
 The screenshot below shows the app's start page. 
   
 ![Microsoft Graph Connect Sample for ASP.NET Core screenshot](readme-images/Page1.PNG)
 
-### Prerequisites
+## Prerequisites
 
 To use the Microsoft Graph Connect Sample for ASP.NET Core, you need the following:
 
@@ -28,7 +28,7 @@ To use the Microsoft Graph Connect Sample for ASP.NET Core, you need the followi
 - A [work or school account](https://dev.office.com/devprogram). (You don't need to be an administrator of the tenant.)
 - The application ID and key from the application that you [register on the Azure Portal](#register-the-app). 
 
-### Register the app
+## Register the app
 
 This app uses the Azure AD endpoint, so you'll register it in the [Azure Portal](https://portal.azure.com/).
 
@@ -79,7 +79,9 @@ You'll use the application ID and secret to configure the app in Visual Studio.
 2. Open the **MicrosoftGraphAspNetCoreConnectSample.sln** sample file in Visual Studio 2017. 
 
 3. In Solution Explorer, open the **appsettings.json** file in the root directory of the project.  
+
    a. For the **AppId** key, replace `ENTER_YOUR_APP_ID` with the application ID of your registered Azure application.  
+   
    b. For the **AppSecret** key, replace `ENTER_YOUR_SECRET` with the key of your registered Azure application. Note that in production apps you should always use certificates as your application secrets, but for this sample we will use a simple shared secret password.  
 
 4. Press F5 to build and run the sample. This will restore NuGet package dependencies and open the app.
