@@ -43,6 +43,7 @@ namespace MicrosoftGraphAspNetCoreConnectSample
 
             // This sample uses an in-memory cache for tokens and subscriptions. Production apps will typically use some method of persistent storage.
             services.AddMemoryCache();
+            services.AddSession();
 
             services.AddAuthentication(
                 SharedOptions => SharedOptions.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
@@ -73,6 +74,8 @@ namespace MicrosoftGraphAspNetCoreConnectSample
             }
 
             app.UseStaticFiles();
+
+            app.UseSession();
 
             app.UseCookieAuthentication();
 

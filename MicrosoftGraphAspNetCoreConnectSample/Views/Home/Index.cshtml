@@ -14,15 +14,19 @@
 }
 @if (User.Identity.IsAuthenticated)
 {
+    <div class="alert alert-info @(TempData["Message"] == null ? "hidden" : null)" role="alert">
+        @Html.Raw(TempData["Message"])
+    </div>
     <br />
     <h4>Permissions</h4>
     <p>This sample uses the OAuth2 client credentials flow using delegate permissions and the Azure AD v1.0 endpoint (ADAL). Because the sample uses only delegate permissions, it does not require admin consent.</p>
+
     <br />
     <h4>Get started</h4>
     <p>Change the email address in the box below to another valid account's email in the same tenant and click <b>Load data</b>!</p>
     <form asp-controller="Home" asp-action="Index" method="get">
         <input type="email" name="email" value="@ViewData["Email"]" style="width: 300px;" />
-        <button type="submit">Load data</button>  
+        <button type="submit">Load data</button>
     </form>
     <br />
     <div class="row">
@@ -33,6 +37,15 @@
             <pre>@ViewData["Response"]</pre>
         </div>
     </div>
+
     <br />
     <h4>Send an email</h4>
+    <form asp-controller="Home" asp-action="SendEmail" method="post">
+
+        <div class="form-group">
+            <label for="recipients">Recipient email addresses, separated by a semicolon</label>
+            <input type="text" name="recipients" value="@ViewData["Email"]" style="width: 300px;" />
+            <button type="submit">Send email</button>
+        </div>
+    </form>
 }
