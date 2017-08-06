@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using MicrosoftGraphAspNetCoreConnectSample.Helpers;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace MicrosoftGraphAspNetCoreConnectSample
 {
@@ -39,12 +41,23 @@ namespace MicrosoftGraphAspNetCoreConnectSample
             // Add framework services.
             services.AddMvc();
 
+            // This sample uses an in-memory cache for tokens and subscriptions. Production apps will typically use some method of persistent storage.
+            services.AddMemoryCache();
+
             services.AddAuthentication(
                 SharedOptions => SharedOptions.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
+
+            // Add application services.
+            services.AddSingleton<IConfiguration>(Configuration);
+            services.AddSingleton<IGraphAuthProvider, GraphAuthProvider>();
+            services.AddTransient<IGraphSDKHelper, GraphSDKHelper>();
         }
 
+        public const string ObjectIdentifierType = "http://schemas.microsoft.com/identity/claims/objectidentifier";
+        public const string TenantIdType = "http://schemas.microsoft.com/identity/claims/tenantid";
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IGraphSDKHelper graphSdkHelper)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -68,6 +81,7 @@ namespace MicrosoftGraphAspNetCoreConnectSample
                 ClientId = Configuration["Authentication:AzureAd:ClientId"],
                 Authority = Configuration["Authentication:AzureAd:AADInstance"] + "Common",
                 CallbackPath = Configuration["Authentication:AzureAd:CallbackPath"],
+                ResponseType = OpenIdConnectResponseType.CodeIdToken,
 
                 TokenValidationParameters = new TokenValidationParameters
                 {
@@ -82,16 +96,13 @@ namespace MicrosoftGraphAspNetCoreConnectSample
                 },
                 Events = new OpenIdConnectEvents
                 {
-                    OnTicketReceived = (context) =>
+                    OnAuthorizationCodeReceived = async (context) =>
                     {
-                        // If your authentication logic is based on users then add your logic here
-                        return Task.FromResult(0);
-                    },
-                    OnAuthenticationFailed = (context) =>
-                    {
-                        context.Response.Redirect("/Home/Error");
-                        context.HandleResponse(); // Suppress the exception
-                        return Task.FromResult(0);
+                        var code = context.ProtocolMessage.Code;
+                        var identifier = context.Ticket.Principal.Claims.First(item => item.Type == ObjectIdentifierType).Value;
+
+                        var result = await graphSdkHelper.GetTokenByAuthorizationCodeAsync(identifier, code);
+                        context.HandleCodeRedemption(result.AccessToken, result.IdToken);
                     },
                     // If your application needs to do authenticate single users, add your user validation below.
                     //OnTokenValidated = (context) =>
