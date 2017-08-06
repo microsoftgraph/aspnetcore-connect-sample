@@ -26,7 +26,7 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
             _aadInstance = configuration.GetValue<string>("Authentication:AzureAd:AADInstance") + "common";
             _appId = configuration.GetValue<string>("Authentication:AzureAd:ClientId");
             _appSecret = configuration.GetValue<string>("Authentication:AzureAd:ClientSecret");
-            _graphResourceId = configuration.GetValue<string>("Authentication:Graph:ResourceId");
+            _graphResourceId = configuration.GetValue<string>("Authentication:AzureAd:GraphResourceId");
         }
 
         // Gets an access token. First tries to get the access token from the token cache.
