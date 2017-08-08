@@ -99,26 +99,26 @@ You'll use the application ID and secret to configure the app in Visual Studio.
 ## Key components of the sample 
 The following files contain code that's related to connecting to Microsoft Graph, loading user data and sending emails.
 
-- [`appsettings.json`](https://github.com/szmaorka/aspnetcore-connect-sample/blob/master/MicrosoftGraphAspNetCoreConnectSample/appsettings.json) Contains values used for authentication and authorization. 
-- [`Startup.cs`](https://github.com/szmaorka/aspnetcore-connect-sample/blob/master/MicrosoftGraphAspNetCoreConnectSample/Startup.cs) Configures the app and the services it uses, including authentication.
+- [`appsettings.json`](https://github.com/microsoftgraph/aspnetcore-connect-sample/blob/master/MicrosoftGraphAspNetCoreConnectSample/appsettings.json) Contains values used for authentication and authorization. 
+- [`Startup.cs`](https://github.com/microsoftgraph/aspnetcore-connect-sample/blob/master/MicrosoftGraphAspNetCoreConnectSample/Startup.cs) Configures the app and the services it uses, including authentication.
 
 **Controllers**  
-- [`AccountController.cs`](https://github.com/szmaorka/aspnetcore-connect-sample/blob/master/MicrosoftGraphAspNetCoreConnectSample/Controllers/AccountController.cs) Handles sign in and sign out.  
-- [`HomeController.cs`](https://github.com/szmaorka/aspnetcore-connect-sample/blob/master/MicrosoftGraphAspNetCoreConnectSample/Controllers/HomeController.cs) Handles the requests from the UI.
+- [`AccountController.cs`](https://github.com/microsoftgraph/aspnetcore-connect-sample/blob/master/MicrosoftGraphAspNetCoreConnectSample/Controllers/AccountController.cs) Handles sign in and sign out.  
+- [`HomeController.cs`](https://github.com/microsoftgraph/aspnetcore-connect-sample/blob/master/MicrosoftGraphAspNetCoreConnectSample/Controllers/HomeController.cs) Handles the requests from the UI.
 
 **Views**
-- [`Index.cshtml`](https://github.com/szmaorka/aspnetcore-connect-sample/blob/master/MicrosoftGraphAspNetCoreConnectSample/Views/Home/Index.cshtml) Contains the sample's UI.
+- [`Index.cshtml`](https://github.com/microsoftgraph/aspnetcore-connect-sample/blob/master/MicrosoftGraphAspNetCoreConnectSample/Views/Home/Index.cshtml) Contains the sample's UI.
 
 **Helpers**  
-- [`GraphAuthProvider.cs`](https://github.com/szmaorka/aspnetcore-connect-sample/blob/master/MicrosoftGraphAspNetCoreConnectSample/Helpers/GraphAuthProvider.cs) Gets an access token using ADAL's **AcquireTokenByAuthorizationCodeAsync** method.
-- [`GraphSDKHelper.cs`](https://github.com/szmaorka/aspnetcore-connect-sample/blob/master/MicrosoftGraphAspNetCoreConnectSample/Helpers/GraphSDKHelper.cs) Initiates the SDK client used to interact with Microsoft Graph.
-- [`GraphService.cs`](https://github.com/szmaorka/aspnetcore-connect-sample/blob/master/MicrosoftGraphAspNetCoreConnectSample/Helpers/GraphService.cs) Contains methods that use the **GraphServiceClient** to build and send calls to the Microsoft Graph service and to process the response.
+- [`GraphAuthProvider.cs`](https://github.com/microsoftgraph/aspnetcore-connect-sample/blob/master/MicrosoftGraphAspNetCoreConnectSample/Helpers/GraphAuthProvider.cs) Gets an access token using ADAL's **AcquireTokenByAuthorizationCodeAsync** method.
+- [`GraphSDKHelper.cs`](https://github.com/microsoftgraph/aspnetcore-connect-sample/blob/master/MicrosoftGraphAspNetCoreConnectSample/Helpers/GraphSDKHelper.cs) Initiates the SDK client used to interact with Microsoft Graph.
+- [`GraphService.cs`](https://github.com/microsoftgraph/aspnetcore-connect-sample/blob/master/MicrosoftGraphAspNetCoreConnectSample/Helpers/GraphService.cs) Contains methods that use the **GraphServiceClient** to build and send calls to the Microsoft Graph service and to process the response.
    - The **GetUserJson** action gets the user's profile by an email adress and converts it to JSON.
    - The **GetPictureBase64** action gets the user's profile picture and converts it to a base64 string.
    - The **SendEmail** action sends an email on behalf of the current user.
 
 **TokenStorage**
-- [`SessionTokenCache.cs`](https://github.com/szmaorka/aspnetcore-connect-sample/blob/master/MicrosoftGraphAspNetCoreConnectSample/Helpers/SessionTokenCache.cs) Sample implementation of an in-memory token cache. Production apps will typically use some method of persistent storage. 
+- [`SessionTokenCache.cs`](https://github.com/microsoftgraph/aspnetcore-connect-sample/blob/master/MicrosoftGraphAspNetCoreConnectSample/Helpers/SessionTokenCache.cs) Sample implementation of an in-memory token cache. Production apps will typically use some method of persistent storage. 
 
 ## Contributing
 
@@ -128,7 +128,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 ## Questions and comments
 
-We'd love to get your feedback about the Microsoft Graph Connect Sample for ASP.NET Core. You can send your questions and suggestions to us in the [Issues](https://github.com/szmaorka/aspnetcore-connect-sample/issues) section of this repository.
+We'd love to get your feedback about the Microsoft Graph Connect Sample for ASP.NET Core. You can send your questions and suggestions to us in the [Issues](https://github.com/microsoftgraph/aspnetcore-connect-sample/issues) section of this repository.
 
 Questions about Microsoft Graph in general should be posted to [Stack Overflow](https://stackoverflow.com/questions/tagged/MicrosoftGraph). Make sure that your questions or comments are tagged with *[MicrosoftGraph]*.
 
