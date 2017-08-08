@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿/* 
+*  Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. 
+*  See LICENSE in the source repository root for complete license information. 
+*/
+
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using System.Text;

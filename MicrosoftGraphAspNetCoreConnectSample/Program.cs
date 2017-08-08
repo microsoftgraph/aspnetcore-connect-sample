@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿/* 
+*  Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. 
+*  See LICENSE in the source repository root for complete license information. 
+*/
+
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 
 namespace MicrosoftGraphAspNetCoreConnectSample
