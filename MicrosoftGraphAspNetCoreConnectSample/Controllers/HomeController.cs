@@ -79,7 +79,7 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Controllers
             catch (ServiceException se)
             {
                 if (se.Error.Code == "Caller needs to authenticate.") return new EmptyResult();
-                return RedirectToAction("Index", "Error", new { message = "Error: " + se.Error.Message });
+                return RedirectToAction("Error", "Home", new { message = "Error: " + se.Error.Message });
             }
         }
 

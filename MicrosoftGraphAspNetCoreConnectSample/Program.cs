@@ -3,8 +3,8 @@
 *  See LICENSE in the source repository root for complete license information. 
 */
 
-using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore;
 
 namespace MicrosoftGraphAspNetCoreConnectSample
 {
@@ -12,14 +12,12 @@ namespace MicrosoftGraphAspNetCoreConnectSample
     {
         public static void Main(string[] args)
         {
-            var host = new WebHostBuilder()
-                .UseKestrel()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
-                .UseStartup<Startup>()
-                .Build();
-
-            host.Run();
+            BuildWebHost(args).Run();
         }
+
+        public static IWebHost BuildWebHost(string[] args) =>
+        WebHost.CreateDefaultBuilder(args)
+        .UseStartup<Startup>()
+        .Build();
     }
 }
