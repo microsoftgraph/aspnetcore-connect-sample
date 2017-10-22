@@ -1,4 +1,4 @@
-# Microsoft Graph Connect Sample for ASP.NET Core
+# Microsoft Graph Connect Sample for ASP.NET Core 2.0
 
 ## Table of contents
 
@@ -10,7 +10,7 @@
 * [Questions and comments](#questions-and-comments)
 * [Additional resources](#additional-resources)
 
-This ASP.NET Core MVC sample shows how to connect to Microsoft Graph using delegate permissions and the Azure AD v1.0 endpoint to retrieve a user's profile and profile picture and send an email that contains the photo as an attachment.  
+This ASP.NET Core 2.0 MVC sample shows how to connect to Microsoft Graph using delegate permissions and the Azure AD v1.0 endpoint to retrieve a user's profile and profile picture and send an email that contains the photo as an attachment.  
 It uses OpenID Connect for sign in, [Azure AD Authentication Library for .NET](https://github.com/AzureAD/azure-activedirectory-library-for-dotnet) (ADAL) to obtain an access token using the [client credentials grant](https://tools.ietf.org/html/rfc6749#section-4.4), and the [Microsoft Graph Client Library for .NET](https://github.com/microsoftgraph/msgraph-sdk-dotnet) (SDK) to interact with Microsoft Graph.  
 The sample uses only delegate permissions, therefore it does not require admin consent.
 
@@ -24,7 +24,7 @@ The screenshot below shows the app's start page.
 
 To use the Microsoft Graph Connect Sample for ASP.NET Core, you need the following:
 
-- Visual Studio 2017 installed on your development computer. 
+- Visual Studio 2017 [with .NET Core 2.0 SDK](https://www.microsoft.com/net/download/core) installed on your development computer. 
 - A [work or school account](https://dev.office.com/devprogram). (You don't need to be an administrator of the tenant.)
 - The application ID and key from the application that you [register on the Azure Portal](#register-the-app). 
 
