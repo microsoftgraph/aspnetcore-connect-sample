@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Caching.Memory;
 using System;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 
 namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
@@ -14,6 +17,7 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
     public class GraphAuthProvider : IGraphAuthProvider
     {
         private readonly IMemoryCache _memoryCache;
+        private readonly ClientCredential _credential;
 
         // Properties used to get and manage an access token.
         private readonly string _aadInstance;
@@ -24,14 +28,28 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
 
         public GraphAuthProvider(IMemoryCache memoryCache, IConfiguration configuration)
         {
-            _memoryCache = memoryCache;
-            
-            _redirectUri = configuration.GetValue<string>("Authentication:AzureAd:BaseUrl") + configuration.GetValue<string>("Authentication:AzureAd:CallbackPath");
+            var azureOptions =  new AzureAdOptions();
+            configuration.Bind("AzureAd", azureOptions);
 
-            _aadInstance = configuration.GetValue<string>("Authentication:AzureAd:AADInstance") + "common";
-            _appId = configuration.GetValue<string>("Authentication:AzureAd:ClientId");
-            _appSecret = configuration.GetValue<string>("Authentication:AzureAd:ClientSecret");
-            _graphResourceId = configuration.GetValue<string>("Authentication:AzureAd:GraphResourceId");
+            _redirectUri = azureOptions.BaseUrl + azureOptions.CallbackPath;
+            _aadInstance = azureOptions.Instance + "common";
+            _appId = azureOptions.ClientId;
+            _appSecret = azureOptions.ClientSecret;
+            _graphResourceId = azureOptions.GraphResourceId;
+
+            _memoryCache = memoryCache;
+            _credential = new ClientCredential(_appId, _appSecret);
+        }
+        public GraphAuthProvider(IMemoryCache memoryCache, AzureAdOptions azureOptions)
+        {
+            _redirectUri = azureOptions.BaseUrl + azureOptions.CallbackPath;
+            _aadInstance = azureOptions.Instance + "common";
+            _appId = azureOptions.ClientId;
+            _appSecret = azureOptions.ClientSecret;
+            _graphResourceId = azureOptions.GraphResourceId;
+
+            _memoryCache = memoryCache;
+            _credential = new ClientCredential(_appId, _appSecret);
         }
 
         // Gets an access token. First tries to get the access token from the token cache.
@@ -43,8 +61,7 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
             try
             {
                 AuthenticationContext authContext = new AuthenticationContext(_aadInstance, userTokenCache);
-                ClientCredential credential = new ClientCredential(_appId, _appSecret);
-                AuthenticationResult result = await authContext.AcquireTokenSilentAsync(_graphResourceId, credential, new UserIdentifier(userId, UserIdentifierType.UniqueId));
+                AuthenticationResult result = await authContext.AcquireTokenSilentAsync(_graphResourceId, _credential, new UserIdentifier(userId, UserIdentifierType.UniqueId));
 
                 return result.AccessToken;
             }
@@ -63,8 +80,7 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
             try
             {
                 AuthenticationContext authContext = new AuthenticationContext(_aadInstance, userTokenCache);
-                ClientCredential credential = new ClientCredential(_appId, _appSecret);
-                AuthenticationResult result = await authContext.AcquireTokenByAuthorizationCodeAsync(code, new Uri(_redirectUri), credential, _graphResourceId);
+                AuthenticationResult result = await authContext.AcquireTokenByAuthorizationCodeAsync(code, new Uri(_redirectUri), _credential, _graphResourceId);
 
                 return result;
             }
