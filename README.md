@@ -10,65 +10,67 @@
 * [Questions and comments](#questions-and-comments)
 * [Additional resources](#additional-resources)
 
-This ASP.NET Core 2.0 MVC sample shows how to connect to Microsoft Graph using delegate permissions and the Azure AD v1.0 endpoint to retrieve a user's profile and profile picture and send an email that contains the photo as an attachment.  
-It uses OpenID Connect for sign in, [Azure AD Authentication Library for .NET](https://github.com/AzureAD/azure-activedirectory-library-for-dotnet) (ADAL) to obtain an access token using the [client credentials grant](https://tools.ietf.org/html/rfc6749#section-4.4), and the [Microsoft Graph Client Library for .NET](https://github.com/microsoftgraph/msgraph-sdk-dotnet) (SDK) to interact with Microsoft Graph.  
+This ASP.NET Core 2.0 MVC sample shows how to connect to Microsoft Graph using delegate permissions and the Azure AD v2.0 endpoint (MSAL) to retrieve a user's profile and profile picture and send an email that contains the photo as an attachment.  
+The sample uses OpenID Connect for sign in, [Microsoft Authentication Library (MSAL) for .NET](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet) to obtain an access token, and the [Microsoft Graph Client Library for .NET](https://github.com/microsoftgraph/msgraph-sdk-dotnet) (SDK) to interact with Microsoft Graph. The MSAL SDK provides features for working with the [Azure AD v2.0 endpoint](https://azure.microsoft.com/en-us/documentation/articles/active-directory-appmodel-v2-overview), which enables developers to write a single code flow that handles authentication for both work or school (Azure Active Directory) and personal (Microsoft) accounts.
 The sample uses only delegate permissions, therefore it does not require admin consent.
+
+>If you are searching the ASP.NET Core 1.1 version of this sample, you can find it [here](https://github.com/microsoftgraph/aspnetcore-connect-sample/releases/tag/netcore1.1).
 
 ## Using the Microsoft Graph Connect Sample
 
 The screenshot below shows the app's start page. 
   
-![Microsoft Graph Connect Sample for ASP.NET Core screenshot](readme-images/Page1.PNG)
+![Microsoft Graph Connect Sample for ASP.NET Core 2.0 screenshot](readme-images/Page1.PNG)
+
+##Important note about the MSAL Preview
+
+This library is suitable for use in a production environment. We provide the same production level support for this library as we do our current production libraries. During the preview we may make changes to the API, internal cache format, and other mechanisms of this library, which you will be required to take along with bug fixes or feature improvements. This may impact your application. For instance, a change to the cache format may impact your users, such as requiring them to sign in again. An API change may require you to update your code. When we provide the General Availability release we will require you to update to the General Availability version within six months, as applications written using a preview version of library may no longer work.
 
 ## Prerequisites
 
-To use the Microsoft Graph Connect Sample for ASP.NET Core, you need the following:
+To use the Microsoft Graph Connect Sample for ASP.NET Core 2.0, you need the following:
 
 - Visual Studio 2017 [with .NET Core 2.0 SDK](https://www.microsoft.com/net/download/core) installed on your development computer. 
-- A [work or school account](https://dev.office.com/devprogram). (You don't need to be an administrator of the tenant.)
-- The application ID and key from the application that you [register on the Azure Portal](#register-the-app). 
+- Either a [personal Microsoft account](https://signup.live.com) or a [work or school account](https://dev.office.com/devprogram). (You don't need to be an administrator of the tenant.) 
+- The application ID and key from the application that you [register on the App Registration Portal](#register-the-app). 
 
 ## Register the app
 
-This app uses the Azure AD endpoint, so you'll register it in the [Azure Portal](https://portal.azure.com/).
+This app uses the Azure AD v2.0 endpoint, so you'll register it on the [App Registration Portal](https://apps.dev.microsoft.com/).
 
-1. Sign in to the portal using your work or school account.
+1. Sign into the portal using either your personal or work or school account.
 
-2. Choose **Azure Active Directory** in the left-hand navigation pane.
+2. Choose **Add an app** next to 'Converged applications'.
 
-3. Choose **App registrations**, and then choose **New application registration**.  
-
-4. Enter a name for the app, and choose **Create application**. 
+3. Enter a name for the app, and choose **Create application**. (Don't check the Guided Setup box.)
 
    a. Enter a friendly name for the application.
 
-   b. Choose 'Web app/API' as the **Application Type**.
+   b. Copy the **Application Id**. This is the unique identifier for your app.
 
-   c. Enter `https://localhost:44334/signin-oidc` for the **Sign-on URL**. This is the base callback URL for this sample.
-  
-   d. Click **Create**.
-
-5. Choose your new application from the list of registered applications.
-
-6. Copy and store the Application ID. This value is shown in the **Essentials** pane or in **Settings** > **Properties**.
-
-7. Optional. To enable multi-tenanted support for the app, open **Settings** > **Properties** and set **Multi-tenanted** to **Yes**.
-
-8. Configure Permissions for your application:  
-
-   a. Choose **Settings** > **Required permissions** > **Add**.
-  
-   b. Choose **Select an API** > **Microsoft Graph**, and then click **Select**.
-  
-   c. Choose **Select permissions**. Under **Delegated Permissions**, choose **View users' basic profile**, **View users' email address**, **Sign users in**, **Send mail as a user**, **Read all users' basic profiles** and **Sign in and read user profile**. Then click **Select**.
-  
-   d. Click **Done**.
-
-9. Choose **Settings** > **Keys**. Enter a description, choose a duration for the key, and then click **Save**.
+   c. Under **Application Secrets**, choose **Generate New Password**. Copy the password from the dialog. You won't be able to access this value again after you leave this dialog.
 
    >**Important**: Note that in production apps you should always use certificates as your application secrets, but for this sample we will use a simple shared secret password.
 
-10. Copy the key value - this is your app's secret. You won't be able to access this value again after you leave this blade.
+   d. Under **Platforms**, choose **Add platform**.
+
+   e. Choose **Web**.
+
+   f. Make sure the **Allow Implicit Flow** check box is selected, and add `https://localhost:44334/signin-oidc` as a **Redirect URL**. This is the base callback URL for this sample.
+
+   >The **Allow Implicit Flow** option enables the hybrid flow. During authentication, this enables the app to receive both sign-in info (the id_token) and artifacts (in this case, an authorization code) that the app can use to obtain an access token.
+
+   g. Enter `https://localhost:44334/Account/SignOut` as the **Logout URL**.
+  
+   h. Click **Save**.
+
+4. Configure Permissions for your application:  
+
+   a. Choose **Microsoft Graph Permissions** > **Delegated Permissions** > **Add**.
+  
+   c. Select **openid**, **email**, **profile**, **offline_access**, **User.Read**, **User.ReadBasic.All** and **Mail.Send**. Then click **Ok**.
+  
+   d. Click **Save**.
 
 You'll use the application ID and secret to configure the app in Visual Studio.
 
@@ -80,45 +82,45 @@ You'll use the application ID and secret to configure the app in Visual Studio.
 
 3. In Solution Explorer, open the **appsettings.json** file in the root directory of the project.  
 
-   a. For the **AppId** key, replace `ENTER_YOUR_APP_ID` with the application ID of your registered Azure application.  
+   a. For the **AppId** key, replace `ENTER_YOUR_APP_ID` with the application ID of your registered application.  
    
-   b. For the **AppSecret** key, replace `ENTER_YOUR_SECRET` with the key of your registered Azure application. Note that in production apps you should always use certificates as your application secrets, but for this sample we will use a simple shared secret password.  
+   b. For the **AppSecret** key, replace `ENTER_YOUR_SECRET` with the password of your registered application. Note that in production apps you should always use certificates as your application secrets, but for this sample we will use a simple shared secret password.  
 
 4. Press F5 to build and run the sample. This will restore NuGet package dependencies and open the app.
 
    >If you see any errors while installing packages, make sure the local path where you placed the solution is not too long/deep. Moving the solution closer to the root of your drive resolves this issue.
 
-5. Sign in with your work or school account and grant the requested permissions.
+5. Sign in with your personal (MSA) account or your work or school account and grant the requested permissions.
 
 6. You should see your profile picture and your profile data in JSON on the start page.
 
 7. Change the email address in the box to another valid account's email in the same tenant and choose the **Load data** button. When the operation completes, the profile of the choosen user is displayed on the page.
 
-8. Optionally edit the recipient list, and then choose the **Send email** button. When the mail is sent, a Success message is displayed below the button.
+8. Optionally edit the recipient list, and then choose the **Send email** button. When the mail is sent, a Success message is displayed on the top of the page.
 
 ## Key components of the sample 
 The following files contain code that's related to connecting to Microsoft Graph, loading user data and sending emails.
 
-- [`appsettings.json`](https://github.com/microsoftgraph/aspnetcore-connect-sample/blob/master/MicrosoftGraphAspNetCoreConnectSample/appsettings.json) Contains values used for authentication and authorization. 
-- [`Startup.cs`](https://github.com/microsoftgraph/aspnetcore-connect-sample/blob/master/MicrosoftGraphAspNetCoreConnectSample/Startup.cs) Configures the app and the services it uses, including authentication.
+- [`appsettings.json`](MicrosoftGraphAspNetCoreConnectSample/appsettings.json) Contains values used for authentication and authorization. 
+- [`Startup.cs`](MicrosoftGraphAspNetCoreConnectSample/Startup.cs) Configures the app and the services it uses, including authentication.
 
 **Controllers**  
-- [`AccountController.cs`](https://github.com/microsoftgraph/aspnetcore-connect-sample/blob/master/MicrosoftGraphAspNetCoreConnectSample/Controllers/AccountController.cs) Handles sign in and sign out.  
-- [`HomeController.cs`](https://github.com/microsoftgraph/aspnetcore-connect-sample/blob/master/MicrosoftGraphAspNetCoreConnectSample/Controllers/HomeController.cs) Handles the requests from the UI.
+- [`AccountController.cs`](MicrosoftGraphAspNetCoreConnectSample/Controllers/AccountController.cs) Handles sign in and sign out.  
+- [`HomeController.cs`](MicrosoftGraphAspNetCoreConnectSample/Controllers/HomeController.cs) Handles the requests from the UI.
 
 **Views**
-- [`Index.cshtml`](https://github.com/microsoftgraph/aspnetcore-connect-sample/blob/master/MicrosoftGraphAspNetCoreConnectSample/Views/Home/Index.cshtml) Contains the sample's UI.
+- [`Index.cshtml`](MicrosoftGraphAspNetCoreConnectSample/Views/Home/Index.cshtml) Contains the sample's UI.
 
 **Helpers**  
-- [`GraphAuthProvider.cs`](https://github.com/microsoftgraph/aspnetcore-connect-sample/blob/master/MicrosoftGraphAspNetCoreConnectSample/Helpers/GraphAuthProvider.cs) Gets an access token using ADAL's **AcquireTokenByAuthorizationCodeAsync** method.
-- [`GraphSDKHelper.cs`](https://github.com/microsoftgraph/aspnetcore-connect-sample/blob/master/MicrosoftGraphAspNetCoreConnectSample/Helpers/GraphSDKHelper.cs) Initiates the SDK client used to interact with Microsoft Graph.
-- [`GraphService.cs`](https://github.com/microsoftgraph/aspnetcore-connect-sample/blob/master/MicrosoftGraphAspNetCoreConnectSample/Helpers/GraphService.cs) Contains methods that use the **GraphServiceClient** to build and send calls to the Microsoft Graph service and to process the response.
+- [`GraphAuthProvider.cs`](MicrosoftGraphAspNetCoreConnectSample/Helpers/GraphAuthProvider.cs) Gets an access token using MSAL's **AcquireTokenSilentAsync** method.
+- [`GraphSdkHelper.cs`](MicrosoftGraphAspNetCoreConnectSample/Helpers/GraphSDKHelper.cs) Initiates the SDK client used to interact with Microsoft Graph.
+- [`GraphService.cs`](MicrosoftGraphAspNetCoreConnectSample/Helpers/GraphService.cs) Contains methods that use the **GraphServiceClient** to build and send calls to the Microsoft Graph service and to process the response.
    - The **GetUserJson** action gets the user's profile by an email adress and converts it to JSON.
    - The **GetPictureBase64** action gets the user's profile picture and converts it to a base64 string.
    - The **SendEmail** action sends an email on behalf of the current user.
 
 **TokenStorage**
-- [`SessionTokenCache.cs`](https://github.com/microsoftgraph/aspnetcore-connect-sample/blob/master/MicrosoftGraphAspNetCoreConnectSample/Helpers/SessionTokenCache.cs) Sample implementation of an in-memory token cache. Production apps will typically use some method of persistent storage. 
+- [`SessionTokenCache.cs`](MicrosoftGraphAspNetCoreConnectSample/Helpers/SessionTokenCache.cs) Sample implementation of an in-memory token cache. Production apps will typically use some method of persistent storage. 
 
 ## Contributing
 
