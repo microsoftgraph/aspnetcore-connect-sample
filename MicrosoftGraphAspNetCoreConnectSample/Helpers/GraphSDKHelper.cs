@@ -8,12 +8,12 @@ using Microsoft.Graph;
 
 namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
 {
-    public class GraphSDKHelper : IGraphSDKHelper
+    public class GraphSdkHelper : IGraphSdkHelper
     {
         private readonly IGraphAuthProvider _authProvider;
         private GraphServiceClient _graphClient;
 
-        public GraphSDKHelper(IGraphAuthProvider authProvider)
+        public GraphSdkHelper(IGraphAuthProvider authProvider)
         {
             _authProvider = authProvider;
         }
@@ -38,7 +38,7 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
             return _graphClient;
         }
     }
-    public interface IGraphSDKHelper
+    public interface IGraphSdkHelper
     {
         GraphServiceClient GetAuthenticatedClient(string userId);
     }

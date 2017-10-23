@@ -17,9 +17,9 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly IHostingEnvironment _env;
-        private readonly IGraphSDKHelper _graphSdkHelper;
+        private readonly IGraphSdkHelper _graphSdkHelper;
 
-        public HomeController(IConfiguration configuration, IHostingEnvironment hostingEnvironment, IGraphSDKHelper graphSdkHelper)
+        public HomeController(IConfiguration configuration, IHostingEnvironment hostingEnvironment, IGraphSdkHelper graphSdkHelper)
         {
             _configuration = configuration;
             _env = hostingEnvironment;

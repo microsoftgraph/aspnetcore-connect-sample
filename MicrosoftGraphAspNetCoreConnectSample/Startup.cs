@@ -47,7 +47,7 @@ namespace MicrosoftGraphAspNetCoreConnectSample
             // Add application services.
             //services.AddSingleton<IConfiguration>(Configuration);
             services.AddSingleton<IGraphAuthProvider, GraphAuthProvider>();
-            services.AddTransient<IGraphSDKHelper, GraphSDKHelper>();
+            services.AddTransient<IGraphSdkHelper, GraphSdkHelper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
