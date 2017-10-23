@@ -17,9 +17,9 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly IHostingEnvironment _env;
-        private readonly IGraphSDKHelper _graphSdkHelper;
+        private readonly IGraphSdkHelper _graphSdkHelper;
 
-        public HomeController(IConfiguration configuration, IHostingEnvironment hostingEnvironment, IGraphSDKHelper graphSdkHelper)
+        public HomeController(IConfiguration configuration, IHostingEnvironment hostingEnvironment, IGraphSdkHelper graphSdkHelper)
         {
             _configuration = configuration;
             _env = hostingEnvironment;
@@ -33,14 +33,14 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 // Get users's email.
-                email = email ?? User.Identity.Name;
+                email = email ?? User.Identity.Name ?? User.FindFirst("preferred_username").Value;
                 ViewData["Email"] = email;
 
                 // Get user's id for token cache.
                 var identifier = User.FindFirst(Startup.ObjectIdentifierType)?.Value;
 
                 // Initialize the GraphServiceClient.
-                GraphServiceClient graphClient = _graphSdkHelper.GetAuthenticatedClient(identifier);
+                var graphClient = _graphSdkHelper.GetAuthenticatedClient(identifier);
 
                 ViewData["Response"] = await GraphService.GetUserJson(graphClient, email);
 
@@ -67,7 +67,7 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Controllers
                 var identifier = User.FindFirst(Startup.ObjectIdentifierType)?.Value;
 
                 // Initialize the GraphServiceClient.
-                GraphServiceClient graphClient = _graphSdkHelper.GetAuthenticatedClient(identifier);
+                var graphClient = _graphSdkHelper.GetAuthenticatedClient(identifier);
 
                 // Send the email.
                 await GraphService.SendEmail(graphClient, _env, recipients);

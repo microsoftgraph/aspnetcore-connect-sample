@@ -3,27 +3,23 @@
 *  See LICENSE in the source repository root for complete license information. 
 */
 
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using Microsoft.Identity.Client;
 using System.Text;
-
 
 namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
 {
     // Store the user's token information.
     public class SessionTokenCache
     {
-        private static readonly object _fileLock = new object();
-        string _userId = string.Empty;
-        string _cacheId = string.Empty;
-        IMemoryCache _memoryCache;
-        TokenCache _cache = new TokenCache();
+        private static readonly object FileLock = new object();
+        private readonly string _cacheId;
+        private readonly IMemoryCache _memoryCache;
+        private TokenCache _cache = new TokenCache();
 
         public SessionTokenCache(string userId, IMemoryCache memoryCache)
         {
             // not object, we want the SUB
-            _userId = userId;
             _cacheId = userId + "_TokenCache";
             _memoryCache = memoryCache;
 
@@ -32,8 +28,8 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
 
         public TokenCache GetCacheInstance()
         {
-            _cache.BeforeAccess = BeforeAccessNotification;
-            _cache.AfterAccess = AfterAccessNotification;
+            _cache.SetBeforeAccess(BeforeAccessNotification);
+            _cache.SetAfterAccess(AfterAccessNotification);
             Load();
 
             return _cache;
@@ -41,7 +37,7 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
 
         public void SaveUserStateValue(string state)
         {
-            lock (_fileLock)
+            lock (FileLock)
             {
                 _memoryCache.Set(_cacheId + "_state", Encoding.ASCII.GetBytes(state));
             }
@@ -49,8 +45,8 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
 
         public string ReadUserStateValue()
         {
-            string state = string.Empty;
-            lock (_fileLock)
+            string state;
+            lock (FileLock)
             {
                 state = Encoding.ASCII.GetString(_memoryCache.Get(_cacheId + "_state") as byte[]);
             }
@@ -60,7 +56,7 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
 
         public void Load()
         {
-            lock (_fileLock)
+            lock (FileLock)
             {
                 _cache.Deserialize(_memoryCache.Get(_cacheId) as byte[]);
             }
@@ -68,7 +64,7 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
 
         public void Persist()
         {
-            lock (_fileLock)
+            lock (FileLock)
             {
                 // reflect changes in the persistent store
                 _memoryCache.Set(_cacheId, _cache.Serialize());
@@ -78,21 +74,23 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
         }
 
         // Empties the persistent store.
-        public void Clear() 
+        public void Clear()
         {
             _cache = null;
-            _memoryCache.Remove(_cacheId);
+            lock (FileLock) {
+                _memoryCache.Remove(_cacheId);
+            }
         }
 
         // Triggered right before MSAL needs to access the cache.
         // Reload the cache from the persistent store in case it changed since the last access.
-        void BeforeAccessNotification(TokenCacheNotificationArgs args)
+        private void BeforeAccessNotification(TokenCacheNotificationArgs args)
         {
             Load();
         }
 
         // Triggered right after MSAL accessed the cache.
-        void AfterAccessNotification(TokenCacheNotificationArgs args)
+        private void AfterAccessNotification(TokenCacheNotificationArgs args)
         {
             // if the access operation resulted in a cache update
             if (_cache.HasStateChanged)

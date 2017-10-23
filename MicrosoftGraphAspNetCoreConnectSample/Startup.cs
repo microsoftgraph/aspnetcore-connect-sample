@@ -3,21 +3,14 @@
 *  See LICENSE in the source repository root for complete license information. 
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Logging;
+using MicrosoftGraphAspNetCoreConnectSample.Extensions;
 using MicrosoftGraphAspNetCoreConnectSample.Helpers;
 
 namespace MicrosoftGraphAspNetCoreConnectSample
@@ -54,7 +47,7 @@ namespace MicrosoftGraphAspNetCoreConnectSample
             // Add application services.
             //services.AddSingleton<IConfiguration>(Configuration);
             services.AddSingleton<IGraphAuthProvider, GraphAuthProvider>();
-            services.AddTransient<IGraphSDKHelper, GraphSDKHelper>();
+            services.AddTransient<IGraphSdkHelper, GraphSdkHelper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

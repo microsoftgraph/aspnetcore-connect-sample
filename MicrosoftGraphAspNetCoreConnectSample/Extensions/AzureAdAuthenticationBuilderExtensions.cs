@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
-using MicrosoftGraphAspNetCoreConnectSample;
 using MicrosoftGraphAspNetCoreConnectSample.Helpers;
+using Microsoft.Identity.Client;
 
-namespace Microsoft.AspNetCore.Authentication
+namespace MicrosoftGraphAspNetCoreConnectSample.Extensions
 {
     public static class AzureAdAuthenticationBuilderExtensions
     {        
@@ -40,11 +39,13 @@ namespace Microsoft.AspNetCore.Authentication
             public void Configure(string name, OpenIdConnectOptions options)
             {
                 options.ClientId = _azureOptions.ClientId;
-                options.Authority = $"{_azureOptions.Instance}common";
+                options.Authority = $"{_azureOptions.Instance}common/v2.0";
                 options.UseTokenLifetime = true;
                 options.CallbackPath = _azureOptions.CallbackPath;
                 options.RequireHttpsMetadata = false;
                 options.ResponseType = OpenIdConnectResponseType.CodeIdToken;
+                var allScopes = $"{_azureOptions.Scopes} {_azureOptions.GraphScopes}".Split(new[] {' '});
+                foreach (var scope in allScopes) { options.Scope.Add(scope); }
 
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -75,10 +76,25 @@ namespace Microsoft.AspNetCore.Authentication
                     {
                         var code = context.ProtocolMessage.Code;
                         var identifier = context.Principal.FindFirst(Startup.ObjectIdentifierType).Value;
-
                         var memoryCache = context.HttpContext.RequestServices.GetRequiredService<IMemoryCache>();
-                        var graphSdkHelper = new GraphAuthProvider(memoryCache, _azureOptions);
-                        var result = await graphSdkHelper.GetTokenByAuthorizationCodeAsync(identifier, code);
+                        var graphScopes = _azureOptions.GraphScopes.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        
+                        var cca = new ConfidentialClientApplication(
+                            _azureOptions.ClientId, 
+                            _azureOptions.BaseUrl + _azureOptions.CallbackPath,
+                            new ClientCredential(_azureOptions.ClientSecret),
+                            new SessionTokenCache(identifier, memoryCache).GetCacheInstance(), 
+                            null);
+                        var result = await cca.AcquireTokenByAuthorizationCodeAsync(code, graphScopes);
+
+                        // Check whether the login is from the MSA tenant. 
+                        // The sample uses this attribute to disable UI buttons for unsupported operations when the user is logged in with an MSA account.
+                        var currentTenantId = context.Principal.FindFirst(Startup.TenantIdType).Value;
+                        if (currentTenantId == "9188040d-6c67-4c5b-b112-36a304b66dad")
+                        {
+                            // MSA (Microsoft Account) is used to log in
+                        }
+                        
                         context.HandleCodeRedemption(result.AccessToken, result.IdToken);
                     },
                     // If your application needs to do authenticate single users, add your user validation below.

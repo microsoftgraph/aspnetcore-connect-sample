@@ -1,4 +1,4 @@
-﻿namespace Microsoft.AspNetCore.Authentication
+﻿namespace MicrosoftGraphAspNetCoreConnectSample.Extensions
 {
     public class AzureAdOptions
     {
@@ -16,6 +16,10 @@
 
         public string BaseUrl { get; set; }
 
+        public string Scopes { get; set; }
+
         public string GraphResourceId { get; set; }
+
+        public string GraphScopes { get; set; }
     }
 }

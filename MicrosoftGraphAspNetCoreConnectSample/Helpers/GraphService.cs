@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Graph;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
@@ -18,7 +18,7 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
         // Load user's profile in formatted JSON.
         public static async Task<string> GetUserJson(GraphServiceClient graphClient, string email)
         {
-            if (email == null) return JsonConvert.SerializeObject(new { Message = $"Email address cannot be null." }, Formatting.Indented);
+            if (email == null) return JsonConvert.SerializeObject(new { Message = "Email address cannot be null." }, Formatting.Indented);
 
             try
             {
@@ -37,8 +37,12 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
                         return JsonConvert.SerializeObject(new { Message = $"User '{email}' was not found." }, Formatting.Indented);
                     case "ErrorInvalidUser":
                         return JsonConvert.SerializeObject(new { Message = $"The requested user '{email}' is invalid." }, Formatting.Indented);
+                    case "AuthenticationFailure":
+                        return JsonConvert.SerializeObject(new {e.Error.Message}, Formatting.Indented);
+                    case "TokenNotFound":
+                        return JsonConvert.SerializeObject(new {e.Error.Message}, Formatting.Indented);
                     default:
-                        return JsonConvert.SerializeObject(new { Message = $"An unknown error has occured." }, Formatting.Indented);
+                        return JsonConvert.SerializeObject(new { Message = "An unknown error has occured." }, Formatting.Indented);
                 }
             }
         }
@@ -46,22 +50,22 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
         // Load user's profile picture in base64 string.
         public static async Task<string> GetPictureBase64(GraphServiceClient graphClient, string email)
         {
-            if (email == null) return JsonConvert.SerializeObject(new { Message = $"Email address cannot be null." }, Formatting.Indented);
+            if (email == null) return JsonConvert.SerializeObject(new { Message = "Email address cannot be null." }, Formatting.Indented);
 
             try
             {
                 // Load user's profile picture.
-                Stream pictureStream = await graphClient.Users[email].Photo.Content.Request().GetAsync();
+                var pictureStream = await graphClient.Users[email].Photo.Content.Request().GetAsync();
 
                 // Copy stream to MemoryStream object so that it can be converted to byte array.
-                MemoryStream pictureMemoryStream = new MemoryStream();
+                var pictureMemoryStream = new MemoryStream();
                 await pictureStream.CopyToAsync(pictureMemoryStream);
 
                 // Convert stream to byte array.
-                byte[] pictureByteArray = pictureMemoryStream.ToArray();
+                var pictureByteArray = pictureMemoryStream.ToArray();
 
                 // Convert byte array to base64 string.
-                string pictureBase64 = Convert.ToBase64String(pictureByteArray);
+                var pictureBase64 = Convert.ToBase64String(pictureByteArray);
 
                 return "data:image/jpeg;base64," + pictureBase64;
             }
@@ -87,15 +91,15 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
         {
             if (recipients == null) return;
             
-            MessageAttachmentsCollectionPage attachments = new MessageAttachmentsCollectionPage();
+            var attachments = new MessageAttachmentsCollectionPage();
 
             try
             {
                 // Load user's profile picture.
-                Stream pictureStream = await graphClient.Me.Photo.Content.Request().GetAsync();
+                var pictureStream = await graphClient.Me.Photo.Content.Request().GetAsync();
 
                 // Copy stream to MemoryStream object so that it can be converted to byte array.
-                MemoryStream pictureMemoryStream = new MemoryStream();
+                var pictureMemoryStream = new MemoryStream();
                 await pictureStream.CopyToAsync(pictureMemoryStream);
 
                 // Convert stream to byte array and add as attachment.
@@ -122,22 +126,17 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
             }
 
             // Prepare the recipient list.
-            string[] splitter = { ";" };
-            string[] splitRecipientsString = recipients.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
-            List<Recipient> recipientList = new List<Recipient>();
-            foreach (string recipient in splitRecipientsString)
+            var splitRecipientsString = recipients.Split(new[]{ ";" }, StringSplitOptions.RemoveEmptyEntries);
+            var recipientList = splitRecipientsString.Select(recipient => new Recipient
             {
-                recipientList.Add(new Recipient
+                EmailAddress = new EmailAddress
                 {
-                    EmailAddress = new EmailAddress
-                    {
-                        Address = recipient.Trim()
-                    }
-                });
-            }
+                    Address = recipient.Trim()
+                }
+            }).ToList();
 
             // Build the email message.
-            Message email = new Message
+            var email = new Message
             {
                 Body = new ItemBody
                 {
