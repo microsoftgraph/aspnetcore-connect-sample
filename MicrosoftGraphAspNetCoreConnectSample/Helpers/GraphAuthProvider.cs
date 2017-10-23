@@ -27,7 +27,7 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
 
         public GraphAuthProvider(IMemoryCache memoryCache, IConfiguration configuration)
         {
-            var azureOptions =  new AzureAdOptions();
+            var azureOptions = new AzureAdOptions();
             configuration.Bind("AzureAd", azureOptions);
 
             _appId = azureOptions.ClientId;
@@ -50,7 +50,13 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
                 _credential,
                 _userTokenCache,
                 null);
-            
+
+            if (!cca.Users.Any()) throw new ServiceException(new Error
+            {
+                Code = "TokenNotFound",
+                Message = "User not found in token cache. Maybe the server was restarted."
+            });
+
             try
             {
                 var result = await cca.AcquireTokenSilentAsync(_scopes, cca.Users.First());
@@ -65,12 +71,11 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
                 //    new AuthenticationProperties() { RedirectUri = _redirectUri },
                 //    OpenIdConnectAuthenticationDefaults.AuthenticationType);
 
-                throw new ServiceException(
-                    new Error
-                    {
-                        Code = GraphErrorCode.AuthenticationFailure.ToString(),
-                        Message = "Caller needs to authenticate. Unable to retrieve the access token silently."
-                    });
+                throw new ServiceException(new Error
+                {
+                    Code = GraphErrorCode.AuthenticationFailure.ToString(),
+                    Message = "Caller needs to authenticate. Unable to retrieve the access token silently."
+                });
             }
         }
     }

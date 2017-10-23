@@ -37,6 +37,10 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
                         return JsonConvert.SerializeObject(new { Message = $"User '{email}' was not found." }, Formatting.Indented);
                     case "ErrorInvalidUser":
                         return JsonConvert.SerializeObject(new { Message = $"The requested user '{email}' is invalid." }, Formatting.Indented);
+                    case "AuthenticationFailure":
+                        return JsonConvert.SerializeObject(new {e.Error.Message}, Formatting.Indented);
+                    case "TokenNotFound":
+                        return JsonConvert.SerializeObject(new {e.Error.Message}, Formatting.Indented);
                     default:
                         return JsonConvert.SerializeObject(new { Message = "An unknown error has occured." }, Formatting.Indented);
                 }

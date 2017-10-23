@@ -7,7 +7,6 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Identity.Client;
 using System.Text;
 
-
 namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
 {
     // Store the user's token information.
