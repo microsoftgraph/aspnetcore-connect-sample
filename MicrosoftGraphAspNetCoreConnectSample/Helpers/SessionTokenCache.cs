@@ -3,9 +3,8 @@
 *  See LICENSE in the source repository root for complete license information. 
 */
 
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using Microsoft.Identity.Client;
 using System.Text;
 
 
@@ -15,7 +14,6 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
     public class SessionTokenCache
     {
         private static readonly object _fileLock = new object();
-        string _userId = string.Empty;
         string _cacheId = string.Empty;
         IMemoryCache _memoryCache;
         TokenCache _cache = new TokenCache();
@@ -23,7 +21,6 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
         public SessionTokenCache(string userId, IMemoryCache memoryCache)
         {
             // not object, we want the SUB
-            _userId = userId;
             _cacheId = userId + "_TokenCache";
             _memoryCache = memoryCache;
 
@@ -32,8 +29,8 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
 
         public TokenCache GetCacheInstance()
         {
-            _cache.BeforeAccess = BeforeAccessNotification;
-            _cache.AfterAccess = AfterAccessNotification;
+            _cache.SetBeforeAccess(BeforeAccessNotification);
+            _cache.SetAfterAccess(AfterAccessNotification);
             Load();
 
             return _cache;

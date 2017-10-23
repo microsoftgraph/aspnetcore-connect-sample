@@ -5,15 +5,13 @@
 
 using System.Net.Http.Headers;
 using Microsoft.Graph;
-using System.Threading.Tasks;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
 
 namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
 {
     public class GraphSDKHelper : IGraphSDKHelper
     {
         private readonly IGraphAuthProvider _authProvider;
-        private GraphServiceClient _graphClient = null;
+        private GraphServiceClient _graphClient;
 
         public GraphSDKHelper(IGraphAuthProvider authProvider)
         {
@@ -28,7 +26,7 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
                 async (requestMessage) =>
                 {
                     // Passing tenant ID to the sample auth provider to use as a cache key
-                    string accessToken = await _authProvider.GetUserAccessTokenAsync(userId);
+                    var accessToken = await _authProvider.GetUserAccessTokenAsync(userId);
 
                     // Append the access token to the request
                     requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
@@ -39,17 +37,9 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
 
             return _graphClient;
         }
-
-        // Gets a token by Authorization Code.
-        // Using password (secret) to authenticate. Production apps should use a certificate.
-        public async Task<AuthenticationResult> GetTokenByAuthorizationCodeAsync(string userId, string code)
-        {
-            return await _authProvider.GetTokenByAuthorizationCodeAsync(userId, code);
-        }
     }
     public interface IGraphSDKHelper
     {
         GraphServiceClient GetAuthenticatedClient(string userId);
-        Task<AuthenticationResult> GetTokenByAuthorizationCodeAsync(string userId, string code);
     }
 }
