@@ -66,11 +66,6 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
             // Unable to retrieve the access token silently.
             catch (Exception)
             {
-                //TODO: re-challenge
-                //httpContext.Challenge(
-                //    new AuthenticationProperties() { RedirectUri = _redirectUri },
-                //    OpenIdConnectAuthenticationDefaults.AuthenticationType);
-
                 throw new ServiceException(new Error
                 {
                     Code = GraphErrorCode.AuthenticationFailure.ToString(),

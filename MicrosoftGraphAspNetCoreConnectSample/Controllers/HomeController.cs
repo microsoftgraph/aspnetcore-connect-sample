@@ -42,9 +42,9 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Controllers
                 // Initialize the GraphServiceClient.
                 var graphClient = _graphSdkHelper.GetAuthenticatedClient(identifier);
 
-                ViewData["Response"] = await GraphService.GetUserJson(graphClient, email);
+                ViewData["Response"] = await GraphService.GetUserJson(graphClient, email, HttpContext);
 
-                ViewData["Picture"] = await GraphService.GetPictureBase64(graphClient, email);
+                ViewData["Picture"] = await GraphService.GetPictureBase64(graphClient, email, HttpContext);
             }
 
             return View();
@@ -70,7 +70,7 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Controllers
                 var graphClient = _graphSdkHelper.GetAuthenticatedClient(identifier);
 
                 // Send the email.
-                await GraphService.SendEmail(graphClient, _env, recipients);
+                await GraphService.SendEmail(graphClient, _env, recipients, HttpContext);
 
                 // Reset the current user's email address and the status to display when the page reloads.
                 TempData["Message"] = "Success! Your mail was sent.";
