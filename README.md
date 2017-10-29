@@ -22,7 +22,7 @@ The screenshot below shows the app's start page.
   
 ![Microsoft Graph Connect Sample for ASP.NET Core 2.0 screenshot](readme-images/Page1.PNG)
 
-##Important note about the MSAL Preview
+## Important note about the MSAL Preview
 
 This library is suitable for use in a production environment. We provide the same production level support for this library as we do our current production libraries. During the preview we may make changes to the API, internal cache format, and other mechanisms of this library, which you will be required to take along with bug fixes or feature improvements. This may impact your application. For instance, a change to the cache format may impact your users, such as requiring them to sign in again. An API change may require you to update your code. When we provide the General Availability release we will require you to update to the General Availability version within six months, as applications written using a preview version of library may no longer work.
 
@@ -68,9 +68,9 @@ This app uses the Azure AD v2.0 endpoint, so you'll register it on the [App Regi
 
    a. Choose **Microsoft Graph Permissions** > **Delegated Permissions** > **Add**.
   
-   c. Select **openid**, **email**, **profile**, **offline_access**, **User.Read**, **User.ReadBasic.All** and **Mail.Send**. Then click **Ok**.
+   b. Select **openid**, **email**, **profile**, **offline_access**, **User.Read**, **User.ReadBasic.All** and **Mail.Send**. Then click **Ok**.
   
-   d. Click **Save**.
+   c. Click **Save**.
 
 You'll use the application ID and secret to configure the app in Visual Studio.
 
