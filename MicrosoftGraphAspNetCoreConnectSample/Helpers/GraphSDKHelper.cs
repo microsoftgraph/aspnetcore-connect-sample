@@ -21,7 +21,6 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
         // Get an authenticated Microsoft Graph Service client.
         public GraphServiceClient GetAuthenticatedClient(string userId)
         {
-            if (_graphClient != null) return _graphClient;
             _graphClient = new GraphServiceClient(new DelegateAuthenticationProvider(
                 async requestMessage =>
                 {
