@@ -33,7 +33,7 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 // Get users's email.
-                email = email ?? User.Identity.Name ?? User.FindFirst("preferred_username").Value;
+                email = email ?? User.FindFirst("preferred_username")?.Value;
                 ViewData["Email"] = email;
 
                 // Get user's id for token cache.

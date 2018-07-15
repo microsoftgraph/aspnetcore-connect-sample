@@ -49,6 +49,9 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Extensions
 
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
+                    // Ensure that User.Identity.Name is set correctly after login
+                    NameClaimType = "name",
+
                     // Instead of using the default validation (validating against a single issuer value, as we do in line of business apps),
                     // we inject our own multitenant validation logic
                     ValidateIssuer = false,
