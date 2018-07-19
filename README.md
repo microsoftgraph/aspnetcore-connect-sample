@@ -18,7 +18,7 @@ The sample uses only delegate permissions, therefore it does not require admin c
 
 ## Using the Microsoft Graph Connect Sample
 
-The screenshot below shows the app's start page. 
+The screenshot below shows the app's start page.
   
 ![Microsoft Graph Connect Sample for ASP.NET Core 2.0 screenshot](readme-images/Page1.PNG)
 
@@ -30,9 +30,9 @@ This library is suitable for use in a production environment. We provide the sam
 
 To use the Microsoft Graph Connect Sample for ASP.NET Core 2.0, you need the following:
 
-- Visual Studio 2017 [with .NET Core 2.0 SDK](https://www.microsoft.com/net/download/core) installed on your development computer. 
-- Either a [personal Microsoft account](https://signup.live.com) or a [work or school account](https://dev.office.com/devprogram). (You don't need to be an administrator of the tenant.) 
-- The application ID and key from the application that you [register on the App Registration Portal](#register-the-app). 
+* Visual Studio 2017 [with .NET Core 2.0 SDK](https://www.microsoft.com/net/download/core) installed on your development computer.
+* Either a [personal Microsoft account](https://signup.live.com) or a [work or school account](https://dev.office.com/devprogram). (You don't need to be an administrator of the tenant.)
+* The application ID and key from the application that you [register on the App Registration Portal](#register-the-app).
 
 ## Register the app
 
@@ -64,7 +64,11 @@ This app uses the Azure AD v2.0 endpoint, so you'll register it on the [App Regi
   
    h. Click **Save**.
 
-4. Configure Permissions for your application:  
+   >You'll use the application ID and secret to configure the app in Visual Studio.
+
+4. Configure Permissions for your application. **(Optional)**
+
+   >Note that we are not required to add permissions for reading user data and sending emails during the app registration as you would do with the [v1 endpoint (ADAL)](https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-integrating-applications). The [Incremental and dynamic consent](https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-v2-compare#incremental-and-dynamic-consent) capability of the v2 endpoint (MSAL) has made this step optional.
 
    a. Choose **Microsoft Graph Permissions** > **Delegated Permissions** > **Add**.
   
@@ -72,18 +76,16 @@ This app uses the Azure AD v2.0 endpoint, so you'll register it on the [App Regi
   
    c. Click **Save**.
 
-You'll use the application ID and secret to configure the app in Visual Studio.
-
 ## Configure and run the sample
 
 1. Download or clone the Microsoft Graph Connect Sample for ASP.NET Core.
 
-2. Open the **MicrosoftGraphAspNetCoreConnectSample.sln** sample file in Visual Studio 2017. 
+2. Open the **MicrosoftGraphAspNetCoreConnectSample.sln** sample file in Visual Studio 2017.
 
 3. In Solution Explorer, open the **appsettings.json** file in the root directory of the project.  
 
    a. For the **AppId** key, replace `ENTER_YOUR_APP_ID` with the application ID of your registered application.  
-   
+
    b. For the **AppSecret** key, replace `ENTER_YOUR_SECRET` with the password of your registered application. Note that in production apps you should always use certificates as your application secrets, but for this sample we will use a simple shared secret password.  
 
 4. Press F5 to build and run the sample. This will restore NuGet package dependencies and open the app.
@@ -98,29 +100,34 @@ You'll use the application ID and secret to configure the app in Visual Studio.
 
 8. Optionally edit the recipient list, and then choose the **Send email** button. When the mail is sent, a Success message is displayed on the top of the page.
 
-## Key components of the sample 
+## Key components of the sample
+
 The following files contain code that's related to connecting to Microsoft Graph, loading user data and sending emails.
 
-- [`appsettings.json`](MicrosoftGraphAspNetCoreConnectSample/appsettings.json) Contains values used for authentication and authorization. 
-- [`Startup.cs`](MicrosoftGraphAspNetCoreConnectSample/Startup.cs) Configures the app and the services it uses, including authentication.
+* [`appsettings.json`](MicrosoftGraphAspNetCoreConnectSample/appsettings.json) Contains values used for authentication and authorization. 
+* [`Startup.cs`](MicrosoftGraphAspNetCoreConnectSample/Startup.cs) Configures the app and the services it uses, including authentication.
 
-**Controllers**  
-- [`AccountController.cs`](MicrosoftGraphAspNetCoreConnectSample/Controllers/AccountController.cs) Handles sign in and sign out.  
-- [`HomeController.cs`](MicrosoftGraphAspNetCoreConnectSample/Controllers/HomeController.cs) Handles the requests from the UI.
+### Controllers
 
-**Views**
-- [`Index.cshtml`](MicrosoftGraphAspNetCoreConnectSample/Views/Home/Index.cshtml) Contains the sample's UI.
+* [`AccountController.cs`](MicrosoftGraphAspNetCoreConnectSample/Controllers/AccountController.cs) Handles sign in and sign out.  
+* [`HomeController.cs`](MicrosoftGraphAspNetCoreConnectSample/Controllers/HomeController.cs) Handles the requests from the UI.
 
-**Helpers**  
-- [`GraphAuthProvider.cs`](MicrosoftGraphAspNetCoreConnectSample/Helpers/GraphAuthProvider.cs) Gets an access token using MSAL's **AcquireTokenSilentAsync** method.
-- [`GraphSdkHelper.cs`](MicrosoftGraphAspNetCoreConnectSample/Helpers/GraphSDKHelper.cs) Initiates the SDK client used to interact with Microsoft Graph.
-- [`GraphService.cs`](MicrosoftGraphAspNetCoreConnectSample/Helpers/GraphService.cs) Contains methods that use the **GraphServiceClient** to build and send calls to the Microsoft Graph service and to process the response.
-   - The **GetUserJson** action gets the user's profile by an email adress and converts it to JSON.
-   - The **GetPictureBase64** action gets the user's profile picture and converts it to a base64 string.
-   - The **SendEmail** action sends an email on behalf of the current user.
+### Views
 
-**TokenStorage**
-- [`SessionTokenCache.cs`](MicrosoftGraphAspNetCoreConnectSample/Helpers/SessionTokenCache.cs) Sample implementation of an in-memory token cache. Production apps will typically use some method of persistent storage. 
+* [`Index.cshtml`](MicrosoftGraphAspNetCoreConnectSample/Views/Home/Index.cshtml) Contains the sample's UI.
+
+### Helpers
+
+* [`GraphAuthProvider.cs`](MicrosoftGraphAspNetCoreConnectSample/Helpers/GraphAuthProvider.cs) Gets an access token using MSAL's **AcquireTokenSilentAsync** method.
+* [`GraphSdkHelper.cs`](MicrosoftGraphAspNetCoreConnectSample/Helpers/GraphSDKHelper.cs) Initiates the SDK client used to interact with Microsoft Graph.
+* [`GraphService.cs`](MicrosoftGraphAspNetCoreConnectSample/Helpers/GraphService.cs) Contains methods that use the **GraphServiceClient** to build and send calls to the Microsoft Graph service and to process the response.
+  * The **GetUserJson** action gets the user's profile by an email adress and converts it to JSON.
+  * The **GetPictureBase64** action gets the user's profile picture and converts it to a base64 string.
+  * The **SendEmail** action sends an email on behalf of the current user.
+
+### TokenStorage
+
+* [`SessionTokenCache.cs`](MicrosoftGraphAspNetCoreConnectSample/Helpers/SessionTokenCache.cs) Sample implementation of an in-memory token cache. Production apps will typically use some method of persistent storage.
 
 ## Contributing
 
@@ -138,10 +145,11 @@ You can suggest changes for Microsoft Graph on [UserVoice](https://officespdev.u
 
 ## Additional resources
 
-- [Microsoft Graph documentation](https://developer.microsoft.com/graph)
-- [Other Microsoft Graph Connect samples](https://github.com/MicrosoftGraph?q=connect)
-- [Microsoft Graph Webhooks Sample for ASP.NET Core](https://github.com/microsoftgraph/aspnetcore-apponlytoken-webhooks-sample)
-- [Microsoft Graph Connect Sample for ASP.NET 4.6](https://github.com/microsoftgraph/aspnet-connect-sample)
+* [Microsoft Graph documentation](https://developer.microsoft.com/graph)
+* [Other Microsoft Graph Connect samples](https://github.com/MicrosoftGraph?q=connect)
+* [Microsoft Graph Webhooks Sample for ASP.NET Core](https://github.com/microsoftgraph/aspnetcore-apponlytoken-webhooks-sample)
+* [Microsoft Graph Connect Sample for ASP.NET 4.6](https://github.com/microsoftgraph/aspnet-connect-sample)
 
 ## Copyright
+
 Copyright (c) 2017 Microsoft. All rights reserved.
