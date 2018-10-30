@@ -51,7 +51,8 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
                 _userTokenCache,
                 null);
 
-            if (!cca.Users.Any()) throw new ServiceException(new Error
+            var accounts = (await cca.GetAccountsAsync()).ToList();
+            if (!accounts.Any()) throw new ServiceException(new Error
             {
                 Code = "TokenNotFound",
                 Message = "User not found in token cache. Maybe the server was restarted."
@@ -59,7 +60,7 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
 
             try
             {
-                var result = await cca.AcquireTokenSilentAsync(_scopes, cca.Users.First());
+                var result = await cca.AcquireTokenSilentAsync(_scopes, accounts.First());
                 return result.AccessToken;
             }
 
