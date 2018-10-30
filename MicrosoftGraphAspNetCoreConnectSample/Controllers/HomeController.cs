@@ -95,6 +95,11 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Controllers
             return View();
         }
 
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
         [AllowAnonymous]
         public IActionResult Error()
         {
