@@ -1,4 +1,4 @@
-# Microsoft Graph Connect Sample for ASP.NET Core 2.0
+# Microsoft Graph Connect Sample for ASP.NET Core 2.1
 
 ## Table of contents
 
@@ -10,7 +10,7 @@
 * [Questions and comments](#questions-and-comments)
 * [Additional resources](#additional-resources)
 
-This ASP.NET Core 2.0 MVC sample shows how to connect to Microsoft Graph using delegate permissions and the Azure AD v2.0 endpoint (MSAL) to retrieve a user's profile and profile picture and send an email that contains the photo as an attachment.  
+This ASP.NET Core 2.1 MVC sample shows how to connect to Microsoft Graph using delegate permissions and the Azure AD v2.0 endpoint (MSAL) to retrieve a user's profile and profile picture and send an email that contains the photo as an attachment.  
 The sample uses OpenID Connect for sign in, [Microsoft Authentication Library (MSAL) for .NET](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet) to obtain an access token, and the [Microsoft Graph Client Library for .NET](https://github.com/microsoftgraph/msgraph-sdk-dotnet) (SDK) to interact with Microsoft Graph. The MSAL SDK provides features for working with the [Azure AD v2.0 endpoint](https://azure.microsoft.com/en-us/documentation/articles/active-directory-appmodel-v2-overview), which enables developers to write a single code flow that handles authentication for both work or school (Azure Active Directory) and personal (Microsoft) accounts.
 The sample uses only delegate permissions, therefore it does not require admin consent.
 
@@ -20,7 +20,7 @@ The sample uses only delegate permissions, therefore it does not require admin c
 
 The screenshot below shows the app's start page.
   
-![Microsoft Graph Connect Sample for ASP.NET Core 2.0 screenshot](readme-images/Page1.PNG)
+![Microsoft Graph Connect Sample for ASP.NET Core 2.1 screenshot](readme-images/Page1.PNG)
 
 ## Important note about the MSAL Preview
 
@@ -28,9 +28,9 @@ This library is suitable for use in a production environment. We provide the sam
 
 ## Prerequisites
 
-To use the Microsoft Graph Connect Sample for ASP.NET Core 2.0, you need the following:
+To use the Microsoft Graph Connect Sample for ASP.NET Core 2.1, you need the following:
 
-* Visual Studio 2017 [with .NET Core 2.0 SDK](https://www.microsoft.com/net/download/core) installed on your development computer.
+* Visual Studio 2017 [with .NET Core 2.1 SDK](https://www.microsoft.com/net/download/core) installed on your development computer.
 * Either a [personal Microsoft account](https://signup.live.com) or a [work or school account](https://dev.office.com/devprogram). (You don't need to be an administrator of the tenant.)
 * The application ID and key from the application that you [register on the App Registration Portal](#register-the-app).
 
@@ -152,4 +152,4 @@ You can suggest changes for Microsoft Graph on [UserVoice](https://officespdev.u
 
 ## Copyright
 
-Copyright (c) 2017 Microsoft. All rights reserved.
+Copyright (c) 2018 Microsoft. All rights reserved.
