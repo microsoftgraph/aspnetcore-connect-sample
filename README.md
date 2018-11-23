@@ -1,5 +1,13 @@
 # Microsoft Graph Connect Sample for ASP.NET Core 2.1
 
+![Microsoft Graph Connect Sample for ASP.NET Core 2.1 screenshot](readme-images/Page1.PNG)
+
+This ASP.NET Core 2.1 MVC sample shows how to connect to Microsoft Graph using delegate permissions and the Azure AD v2.0 endpoint (MSAL) to retrieve a user's profile and profile picture and send an email that contains the photo as an attachment.  
+The sample uses OpenID Connect for sign in, [Microsoft Authentication Library (MSAL) for .NET](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet) to obtain an access token, and the [Microsoft Graph Client Library for .NET](https://github.com/microsoftgraph/msgraph-sdk-dotnet) (SDK) to interact with Microsoft Graph. The MSAL SDK provides features for working with the [Azure AD v2.0 endpoint](https://azure.microsoft.com/en-us/documentation/articles/active-directory-appmodel-v2-overview), which enables developers to write a single code flow that handles authentication for both work or school (Azure Active Directory) and personal (Microsoft) accounts.
+The sample uses only delegate permissions, therefore it does not require admin consent.
+
+>If you are searching for an earlier version of this sample, you can find the ASP.NET Core 1.1 version [here](https://github.com/microsoftgraph/aspnetcore-connect-sample/tree/netcore1.1) and the ASP.NET Core 2.0 version [here](https://github.com/microsoftgraph/aspnetcore-connect-sample/tree/netcore2.0).
+
 ## Table of contents
 
 * [Prerequisites](#prerequisites)
@@ -10,17 +18,9 @@
 * [Questions and comments](#questions-and-comments)
 * [Additional resources](#additional-resources)
 
-This ASP.NET Core 2.1 MVC sample shows how to connect to Microsoft Graph using delegate permissions and the Azure AD v2.0 endpoint (MSAL) to retrieve a user's profile and profile picture and send an email that contains the photo as an attachment.  
-The sample uses OpenID Connect for sign in, [Microsoft Authentication Library (MSAL) for .NET](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet) to obtain an access token, and the [Microsoft Graph Client Library for .NET](https://github.com/microsoftgraph/msgraph-sdk-dotnet) (SDK) to interact with Microsoft Graph. The MSAL SDK provides features for working with the [Azure AD v2.0 endpoint](https://azure.microsoft.com/en-us/documentation/articles/active-directory-appmodel-v2-overview), which enables developers to write a single code flow that handles authentication for both work or school (Azure Active Directory) and personal (Microsoft) accounts.
-The sample uses only delegate permissions, therefore it does not require admin consent.
+## Differences between ADAL and MSAL 
 
->If you are searching for an earlier version of this sample, you can find the ASP.NET Core 1.1 version [here](https://github.com/microsoftgraph/aspnetcore-connect-sample/tree/netcore1.1) and the ASP.NET Core 2.0 version [here](https://github.com/microsoftgraph/aspnetcore-connect-sample/tree/netcore2.0).
-
-## Using the Microsoft Graph Connect Sample
-
-The screenshot below shows the app's start page.
-  
-![Microsoft Graph Connect Sample for ASP.NET Core 2.1 screenshot](readme-images/Page1.PNG)
+ADAL (Azure AD v1.0) and MSAL (Azure AD v2.0) are both authentication libraries for a wide variety of languages, which enable you to acquire tokens from Azure AD, to access protected Web APIs (Microsoft APIs or applications registered with Azure Active Directory). ADAL applications allow users to sign-in with their work and school account and need to be registered in the [Azure portal](https://portal.azure.com/), while applications that use the new (in-preview) MSAL allow users to sign-in with either their work and school accounts or their personal accounts and need to be registered in the [application registration portal](https://apps.dev.microsoft.com/), unless they are Azure AD B2C applications. Both ADAL and MSAL do have their .NET client libraries: [ADAL.NET](https://github.com/AzureAD/azure-activedirectory-library-for-dotnet) and [MSAL.NET](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet) respectively. [Learn more about the migration and differences between ADAL.NET and MSAL.NET here.](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet/wiki/adal-to-msal)
 
 ## Important note about the MSAL Preview
 
