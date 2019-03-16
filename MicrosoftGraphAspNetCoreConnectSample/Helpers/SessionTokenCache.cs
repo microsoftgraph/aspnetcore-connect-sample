@@ -3,25 +3,25 @@
 *  See LICENSE in the source repository root for complete license information. 
 */
 
-using Microsoft.Extensions.Caching.Memory;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Identity.Client;
-using System.Text;
+using System.Threading;
 
 namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
 {
     // Store the user's token information.
     public class SessionTokenCache
     {
-        private static readonly object FileLock = new object();
+        private static readonly ReaderWriterLockSlim SessionLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
         private readonly string _cacheId;
-        private readonly IMemoryCache _memoryCache;
-        private TokenCache _cache = new TokenCache();
+        private readonly HttpContext httpContext = null;
+        private readonly TokenCache _cache = new TokenCache();
 
-        public SessionTokenCache(string userId, IMemoryCache memoryCache)
+        public SessionTokenCache(string userId, HttpContext httpcontext)
         {
             // not object, we want the SUB
             _cacheId = userId + "_TokenCache";
-            _memoryCache = memoryCache;
+            httpContext = httpcontext;
 
             Load();
         }
@@ -37,63 +37,52 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
 
         public void SaveUserStateValue(string state)
         {
-            lock (FileLock)
-            {
-                _memoryCache.Set(_cacheId + "_state", Encoding.ASCII.GetBytes(state));
-            }
+            SessionLock.EnterWriteLock();
+            httpContext.Session.SetString(_cacheId + "_state", state);
+            SessionLock.ExitWriteLock();
         }
 
         public string ReadUserStateValue()
         {
-            string state;
-            lock (FileLock)
-            {
-                state = Encoding.ASCII.GetString(_memoryCache.Get(_cacheId + "_state") as byte[]);
-            }
-
+            SessionLock.EnterReadLock();
+            string state = httpContext.Session.GetString(_cacheId + "_state");
+            SessionLock.ExitReadLock();
             return state;
         }
 
         public void Load()
         {
-            lock (FileLock)
+            SessionLock.EnterReadLock();
+            byte[] blob = httpContext.Session.Get(_cacheId);
+            if (blob != null)
             {
-                _cache.Deserialize(_memoryCache.Get(_cacheId) as byte[]);
+                _cache.Deserialize(blob);
             }
+            SessionLock.ExitReadLock();
         }
 
         public void Persist()
         {
-            lock (FileLock)
-            {
-                // reflect changes in the persistent store
-                _memoryCache.Set(_cacheId, _cache.Serialize());
-                // once the write operation took place, restore the HasStateChanged bit to false
-                _cache.HasStateChanged = false;
-            }
-        }
+            SessionLock.EnterWriteLock();
 
-        // Empties the persistent store.
-        public void Clear()
-        {
-            _cache = null;
-            lock (FileLock) {
-                _memoryCache.Remove(_cacheId);
-            }
+            // Reflect changes in the persistent store
+            httpContext.Session.Set(_cacheId, _cache.Serialize());
+
+            SessionLock.ExitWriteLock();
         }
 
         // Triggered right before MSAL needs to access the cache.
         // Reload the cache from the persistent store in case it changed since the last access.
-        private void BeforeAccessNotification(TokenCacheNotificationArgs args)
+        void BeforeAccessNotification(TokenCacheNotificationArgs args)
         {
             Load();
         }
 
         // Triggered right after MSAL accessed the cache.
-        private void AfterAccessNotification(TokenCacheNotificationArgs args)
+        void AfterAccessNotification(TokenCacheNotificationArgs args)
         {
             // if the access operation resulted in a cache update
-            if (_cache.HasStateChanged)
+            if (args.HasStateChanged)
             {
                 Persist();
             }
