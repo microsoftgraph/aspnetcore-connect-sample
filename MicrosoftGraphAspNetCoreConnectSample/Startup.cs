@@ -53,9 +53,6 @@ namespace MicrosoftGraphAspNetCoreConnectSample
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-
-            // This sample uses an in-memory cache for tokens and subscriptions. Production apps will typically use some method of persistent storage.
-            services.AddMemoryCache();
             services.AddSession();
 
             // Add application services.
