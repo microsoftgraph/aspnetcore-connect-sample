@@ -2,18 +2,16 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using MicrosoftGraphAspNetCoreConnectSample.Helpers;
-using Microsoft.Identity.Client;
 
 namespace MicrosoftGraphAspNetCoreConnectSample.Extensions
 {
     public static class AzureAdAuthenticationBuilderExtensions
-    {        
+    {
         public static AuthenticationBuilder AddAzureAd(this AuthenticationBuilder builder)
             => builder.AddAzureAd(_ => { });
 
@@ -25,15 +23,17 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Extensions
             return builder;
         }
 
-        public class ConfigureAzureOptions: IConfigureNamedOptions<OpenIdConnectOptions>
+        public class ConfigureAzureOptions : IConfigureNamedOptions<OpenIdConnectOptions>
         {
             private readonly AzureAdOptions _azureOptions;
+            private readonly IGraphAuthProvider _authProvider;
 
             public AzureAdOptions GetAzureAdOptions() => _azureOptions;
 
-            public ConfigureAzureOptions(IOptions<AzureAdOptions> azureOptions)
+            public ConfigureAzureOptions(IOptions<AzureAdOptions> azureOptions, IGraphAuthProvider authProvider)
             {
                 _azureOptions = azureOptions.Value;
+                _authProvider = authProvider;
             }
 
             public void Configure(string name, OpenIdConnectOptions options)
@@ -44,7 +44,7 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Extensions
                 options.CallbackPath = _azureOptions.CallbackPath;
                 options.RequireHttpsMetadata = false;
                 options.ResponseType = OpenIdConnectResponseType.CodeIdToken;
-                var allScopes = $"{_azureOptions.Scopes} {_azureOptions.GraphScopes}".Split(new[] {' '});
+                var allScopes = $"{_azureOptions.Scopes} {_azureOptions.GraphScopes}".Split(new[] { ' ' });
                 foreach (var scope in allScopes) { options.Scope.Add(scope); }
 
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -79,16 +79,8 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Extensions
                     {
                         var code = context.ProtocolMessage.Code;
                         var identifier = context.Principal.FindFirst(Startup.ObjectIdentifierType).Value;
-                        var memoryCache = context.HttpContext.RequestServices.GetRequiredService<IMemoryCache>();
-                        var graphScopes = _azureOptions.GraphScopes.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                        
-                        var cca = new ConfidentialClientApplication(
-                            _azureOptions.ClientId, 
-                            _azureOptions.BaseUrl + _azureOptions.CallbackPath,
-                            new ClientCredential(_azureOptions.ClientSecret),
-                            new SessionTokenCache(identifier, memoryCache).GetCacheInstance(), 
-                            null);
-                        var result = await cca.AcquireTokenByAuthorizationCodeAsync(code, graphScopes);
+
+                        var result = await _authProvider.GetUserAccessTokenByAuthorizationCode(code);
 
                         // Check whether the login is from the MSA tenant. 
                         // The sample uses this attribute to disable UI buttons for unsupported operations when the user is logged in with an MSA account.
@@ -97,7 +89,7 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Extensions
                         {
                             // MSA (Microsoft Account) is used to log in
                         }
-                        
+
                         context.HandleCodeRedemption(result.AccessToken, result.IdToken);
                     },
                     // If your application needs to do authenticate single users, add your user validation below.

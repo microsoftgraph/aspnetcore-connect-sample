@@ -10,6 +10,7 @@ using MicrosoftGraphAspNetCoreConnectSample.Helpers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Graph;
 using Microsoft.AspNetCore.Hosting;
+using System.Security.Claims;
 
 namespace MicrosoftGraphAspNetCoreConnectSample.Controllers
 {
@@ -36,11 +37,8 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Controllers
                 email = email ?? User.FindFirst("preferred_username")?.Value;
                 ViewData["Email"] = email;
 
-                // Get user's id for token cache.
-                var identifier = User.FindFirst(Startup.ObjectIdentifierType)?.Value;
-
                 // Initialize the GraphServiceClient.
-                var graphClient = _graphSdkHelper.GetAuthenticatedClient(identifier);
+                var graphClient = _graphSdkHelper.GetAuthenticatedClient((ClaimsIdentity)User.Identity);
 
                 ViewData["Response"] = await GraphService.GetUserJson(graphClient, email, HttpContext);
 
@@ -63,11 +61,8 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Controllers
 
             try
             {
-                // Get user's id for token cache.
-                var identifier = User.FindFirst(Startup.ObjectIdentifierType)?.Value;
-
                 // Initialize the GraphServiceClient.
-                var graphClient = _graphSdkHelper.GetAuthenticatedClient(identifier);
+                var graphClient = _graphSdkHelper.GetAuthenticatedClient((ClaimsIdentity)User.Identity);
 
                 // Send the email.
                 await GraphService.SendEmail(graphClient, _env, recipients, HttpContext);
