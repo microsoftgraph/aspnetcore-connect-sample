@@ -125,10 +125,6 @@ The following files contain code that's related to connecting to Microsoft Graph
   * The **GetPictureBase64** action gets the user's profile picture and converts it to a base64 string.
   * The **SendEmail** action sends an email on behalf of the current user.
 
-### TokenStorage
-
-* [`SessionTokenCache.cs`](MicrosoftGraphAspNetCoreConnectSample/Helpers/SessionTokenCache.cs) Sample implementation of an in-memory token cache. Production apps will typically use some method of persistent storage.
-
 ## Contributing
 
 If you'd like to contribute to this sample, see [CONTRIBUTING.MD](/CONTRIBUTING.md).
