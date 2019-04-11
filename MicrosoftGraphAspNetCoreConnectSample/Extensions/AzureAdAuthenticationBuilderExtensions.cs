@@ -39,7 +39,7 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Extensions
             public void Configure(string name, OpenIdConnectOptions options)
             {
                 options.ClientId = _azureOptions.ClientId;
-                options.Authority = $"{_azureOptions.Instance}common/v2.0";
+                options.Authority = $"{_authProvider.Authority}v2.0";
                 options.UseTokenLifetime = true;
                 options.CallbackPath = _azureOptions.CallbackPath;
                 options.RequireHttpsMetadata = false;
