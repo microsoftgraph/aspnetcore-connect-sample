@@ -83,17 +83,17 @@ To use the Microsoft Graph Connect Sample for ASP.NET Core 2.1, you need the fol
         > In production apps you should always use certificates as your application secrets, but for this sample we will use a simple shared secret password.
 1. Click **Authentication** from the current blade navigation pane.
     1. Select 'ID tokens'
-
+        > **Note:** Microsoft recommends that you explicitly list all delegated permissions when registering your app. While the incremental and dynamic consent capabilities of the v2 endpoint make this step optional, failing to do so can negatively impact admin consent.
 1. Click **API permissions** from the current blade navigation pane.
 
     1. Click **Add a permission** from the current blade content.
-    1. On the **Request API permissions** panel select **Microsoft Graph**.
+    2. On the **Request API permissions** panel select **Microsoft Graph**.
 
-    1. Select **Delegated permissions**.
-    1. In the "Select permissions" search box type "User".
-    1. Select **openid**, **email**, **profile**, **offline_access**, **User.Read**, **User.ReadBasic.All** and **Mail.Send**.
+    3. Select **Delegated permissions**.
+    4. In the "Select permissions" search box type "User".
+    5. Select **openid**, **email**, **profile**, **offline_access**, **User.Read**, **User.ReadBasic.All** and **Mail.Send**.
 
-    1. Click **Add permissions** at the bottom of flyout.
+    6. Click **Add permissions** at the bottom of flyout.
 
 ## Configure and run the sample
 
