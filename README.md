@@ -12,19 +12,13 @@ The sample uses only delegate permissions, therefore it does not require admin c
 ## Table of contents
 
 - [Microsoft Graph Connect Sample for ASP.NET Core 2.1](#microsoft-graph-connect-sample-for-aspnet-core-21)
-  - [Table of contents](#table-of-contents)
-  - [Differences between ADAL and MSAL](#differences-between-adal-and-msal)
   - [Prerequisites](#prerequisites)
   - [Register the app](#register-the-app)
   - [Configure and run the sample](#configure-and-run-the-sample)
   - [Key components of the sample](#key-components-of-the-sample)
-    - [Controllers](#controllers)
-    - [Views](#views)
-    - [Helpers](#helpers)
   - [Contributing](#contributing)
   - [Questions and comments](#questions-and-comments)
   - [Additional resources](#additional-resources)
-  - [Copyright](#copyright)
 
 ## Differences between ADAL and MSAL
 
@@ -44,13 +38,13 @@ To use the Microsoft Graph Connect Sample for ASP.NET Core 2.1, you need the fol
 
     > **Note:** If you do not have permissions to create app registrations contact your Azure AD domain administrators.
 
-1. Click **Azure Active Directory** from the left-hand navigation menu.
+2. Click **Azure Active Directory** from the left-hand navigation menu.
 
-1. Click **App registrations** from the current blade navigation pane.
+3. Click **App registrations** from the current blade navigation pane.
 
-1. Click **New registration** from the current blade content.
+4. Click **New registration** from the current blade content.
 
-1. On the **Register an application** page, specify the following values:
+5. On the **Register an application** page, specify the following values:
 
     - **Name** = [Desired app name]
     - **Supported account types** = \<choose the value that applies to your needs\>
@@ -61,28 +55,28 @@ To use the Microsoft Graph Connect Sample for ASP.NET Core 2.1, you need the fol
     > **Note:** Ensure that the Redirect URI value is unique within your domain.  This value can be changed at a later time and does not need to point to a hosted URI.  If the example URI above is already used please choose a unique value.
 
     1. Under **Advanced settings**, set the value of the **Logout URL** to `https://localhost:44334/Account/SignOut`
-    1. Copy the **Redirect URI** as you will need it later.
+    2. Copy the **Redirect URI** as you will need it later.
 
-1. Once the app is created, copy the **Application (client) ID** and **Directory (tenant) ID** from the overview page and store it temporarily as you will need both later.
+6. Once the app is created, copy the **Application (client) ID** and **Directory (tenant) ID** from the overview page and store it temporarily as you will need both later.
 
-1. Click **Certificates & secrets** from the current blade navigation pane.
+7. Click **Certificates & secrets** from the current blade navigation pane.
 
     1. Click **New client secret**.
-    1. On the **Add a client secret** dialog, specify the following values:
+    2. On the **Add a client secret** dialog, specify the following values:
 
         - **Description** = MyAppSecret1
         - **Expires** = In 1 year
 
-    1. Click **Add**.
+    3. Click **Add**.
 
-    1. After the screen has updated with the newly created client secret copy the **VALUE** of the client secret and store it temporarily as you will need it later.
+    4. After the screen has updated with the newly created client secret copy the **VALUE** of the client secret and store it temporarily as you will need it later.
 
         > **Important:** This secret string is never shown again, so make sure you copy it now.
         > In production apps you should always use certificates as your application secrets, but for this sample we will use a simple shared secret password.
-1. Click **Authentication** from the current blade navigation pane.
+8. Click **Authentication** from the current blade navigation pane.
     1. Select 'ID tokens'
         > **Note:** Microsoft recommends that you explicitly list all delegated permissions when registering your app. While the incremental and dynamic consent capabilities of the v2 endpoint make this step optional, failing to do so can negatively impact admin consent.
-1. Click **API permissions** from the current blade navigation pane.
+9. Click **API permissions** from the current blade navigation pane.
 
     1. Click **Add a permission** from the current blade content.
     2. On the **Request API permissions** panel select **Microsoft Graph**.
@@ -138,17 +132,14 @@ The following files contain code that's related to connecting to Microsoft Graph
 - [`GraphAuthProvider.cs`](MicrosoftGraphAspNetCoreConnectSample/Helpers/GraphAuthProvider.cs) Gets an access token using MSAL's **AcquireTokenSilentAsync** method.
 - [`GraphSdkHelper.cs`](MicrosoftGraphAspNetCoreConnectSample/Helpers/GraphSDKHelper.cs) Initiates the SDK client used to interact with Microsoft Graph.
 - [`GraphService.cs`](MicrosoftGraphAspNetCoreConnectSample/Helpers/GraphService.cs) Contains methods that use the **GraphServiceClient** to build and send calls to the Microsoft Graph service and to process the response.
-  - The **GetUserJson** action gets the user's profile by an email adress and converts it to JSON.
+  - The **GetUserJson** action gets the user's profile by an email address and converts it to JSON.
   - The **GetPictureBase64** action gets the user's profile picture and converts it to a base64 string.
   - The **SendEmail** action sends an email on behalf of the current user.
 
-<<<<<<< HEAD
-=======
 ## Important note about the MSAL Preview
 
 This library is suitable for use in a production environment. We provide the same production level support for this library as we do our current production libraries. During the preview we may make changes to the API, internal cache format, and other mechanisms of this library, which you will be required to take along with bug fixes or feature improvements. This may impact your application. For instance, a change to the cache format may impact your users, such as requiring them to sign in again. An API change may require you to update your code. When we provide the General Availability release we will require you to update to the General Availability version within six months, as applications written using a preview version of library may no longer work.
 
->>>>>>> 1f979f730b1f1c10254e75b7a6d7f09a2a999ccb
 ## Contributing
 
 If you'd like to contribute to this sample, see [CONTRIBUTING.MD](/CONTRIBUTING.md).
