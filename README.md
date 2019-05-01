@@ -12,13 +12,20 @@ The sample uses only delegate permissions, therefore it does not require admin c
 ## Table of contents
 
 - [Microsoft Graph Connect Sample for ASP.NET Core 2.1](#microsoft-graph-connect-sample-for-aspnet-core-21)
+  - [Table of contents](#table-of-contents)
+  - [Differences between ADAL and MSAL](#differences-between-adal-and-msal)
   - [Prerequisites](#prerequisites)
   - [Register the app](#register-the-app)
   - [Configure and run the sample](#configure-and-run-the-sample)
   - [Key components of the sample](#key-components-of-the-sample)
+    - [Controllers](#controllers)
+    - [Views](#views)
+    - [Helpers](#helpers)
+  - [Important note about the MSAL Preview](#important-note-about-the-msal-preview)
   - [Contributing](#contributing)
   - [Questions and comments](#questions-and-comments)
   - [Additional resources](#additional-resources)
+  - [Copyright](#copyright)
 
 ## Differences between ADAL and MSAL
 
@@ -75,17 +82,18 @@ To use the Microsoft Graph Connect Sample for ASP.NET Core 2.1, you need the fol
         > In production apps you should always use certificates as your application secrets, but for this sample we will use a simple shared secret password.
 8. Click **Authentication** from the current blade navigation pane.
     1. Select 'ID tokens'
-        > **Note:** Microsoft recommends that you explicitly list all delegated permissions when registering your app. While the incremental and dynamic consent capabilities of the v2 endpoint make this step optional, failing to do so can negatively impact admin consent.
 9. Click **API permissions** from the current blade navigation pane.
 
     1. Click **Add a permission** from the current blade content.
     2. On the **Request API permissions** panel select **Microsoft Graph**.
 
     3. Select **Delegated permissions**.
-    4. In the "Select permissions" search box type "User".
-    5. Select **openid**, **email**, **profile**, **offline_access**, **User.Read**, **User.ReadBasic.All** and **Mail.Send**.
+    1. In the "Select permissions" search box type "User".
+    2. Select **openid**, **email**, **profile**, **offline_access**, **User.Read**, **User.ReadBasic.All** and **Mail.Send**.
 
-    6. Click **Add permissions** at the bottom of flyout.
+    3. Click **Add permissions** at the bottom of flyout.
+
+    > **Note:** Microsoft recommends that you explicitly list all delegated permissions when registering your app. While the incremental and dynamic consent capabilities of the v2 endpoint make this step optional, failing to do so can negatively impact admin consent.
 
 ## Configure and run the sample
 
