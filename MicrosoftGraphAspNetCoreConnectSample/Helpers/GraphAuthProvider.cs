@@ -46,7 +46,7 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
 
             try
             {
-                var result = await _app.AcquireTokenSilentAsync(_scopes, account);
+                var result = await _app.AcquireTokenSilent(_scopes, account).ExecuteAsync();
                 return result.AccessToken;
             }
 
