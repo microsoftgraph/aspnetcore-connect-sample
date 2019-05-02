@@ -7,12 +7,12 @@
 The sample uses OpenID Connect for sign in, [Microsoft Authentication Library (MSAL) for .NET](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet) to obtain an access token, and the [Microsoft Graph Client Library for .NET](https://github.com/microsoftgraph/msgraph-sdk-dotnet) (SDK) to interact with Microsoft Graph. The MSAL SDK provides features for working with the [Azure AD v2.0 endpoint](https://azure.microsoft.com/en-us/documentation/articles/active-directory-appmodel-v2-overview), which enables developers to write a single code flow that handles authentication for both work or school (Azure Active Directory) and personal (Microsoft) accounts.
 The sample uses only delegate permissions, therefore it does not require admin consent.
 
->Previous version of this sample that uses ASP.NET Core 1.1 version is [here](https://github.com/microsoftgraph/aspnetcore-connect-sample/tree/netcore1.1) and the ASP.NET Core 2.0 version [here](https://github.com/microsoftgraph/aspnetcore-connect-sample/tree/netcore2.0).
+> Previous version of this sample that uses ASP.NET Core 1.1 version is [here](https://github.com/microsoftgraph/aspnetcore-connect-sample/tree/netcore1.1) and the ASP.NET Core 2.0 version [here](https://github.com/microsoftgraph/aspnetcore-connect-sample/tree/netcore2.0).
 
 ## Table of contents
 
-- [Register the app](#register-the-app)
 - [Prerequisites](#prerequisites)
+- [Register the app](#register-the-app)
 - [Configure and run the sample](#configure-and-run-the-sample)
 - [Key components of the sample](#key-components-of-the-sample)
 - [Contributing](#contributing)
@@ -35,7 +35,7 @@ To use the Microsoft Graph Connect Sample for ASP.NET Core 2.1, you need the fol
 
 1. Navigate to the [Azure AD Portal](https://portal.azure.com). Login using a **personal account** (aka: Microsoft Account) or **Work or School Account** with permissions to create app registrations.
 
-    > **Note:** If you do not have permissions to create app registrations contact your Azure AD domain administrators.
+   > **Note:** If you do not have permissions to create app registrations contact your Azure AD domain administrators.
 
 2. Click **Azure Active Directory** from the left-hand navigation menu.
 
@@ -45,47 +45,48 @@ To use the Microsoft Graph Connect Sample for ASP.NET Core 2.1, you need the fol
 
 5. On the **Register an application** page, specify the following values:
 
-    - **Name** = [Desired app name]
-    - **Supported account types** = \<choose the value that applies to your needs\>
-    - **Redirect URI**
-        - Type (dropdown) = Web
-        - Value = `https://localhost:44334/signin-oidc`
+   - **Name** = [Desired app name]
+   - **Supported account types** = [Choose the value that applies to your needs]
+   - **Redirect URI**
+     - Type (dropdown) = Web
+     - Value = `https://localhost:44334/signin-oidc`
 
-    > **Note:** Ensure that the Redirect URI value is unique within your domain.  This value can be changed at a later time and does not need to point to a hosted URI.  If the example URI above is already used please choose a unique value.
+   > **Note:** Ensure that the Redirect URI value is unique within your domain. This value can be changed at a later time and does not need to point to a hosted URI. If the example URI above is already used please choose a unique value.
 
-    1. Under **Advanced settings**, set the value of the **Logout URL** to `https://localhost:44334/Account/SignOut`
-    2. Copy the **Redirect URI** as you will need it later.
+   1. Under **Advanced settings**, set the value of the **Logout URL** to `https://localhost:44334/Account/SignOut`
+   2. Copy the **Redirect URI** as you will need it later.
 
 6. Once the app is created, copy the **Application (client) ID** and **Directory (tenant) ID** from the overview page and store it temporarily as you will need both later.
 
 7. Click **Certificates & secrets** from the current blade navigation pane.
 
-    1. Click **New client secret**.
-    2. On the **Add a client secret** dialog, specify the following values:
+   1. Click **New client secret**.
+   2. On the **Add a client secret** dialog, specify the following values:
 
-        - **Description** = MyAppSecret1
-        - **Expires** = In 1 year
+      - **Description** = MyAppSecret1
+      - **Expires** = In 1 year
 
-    3. Click **Add**.
+   3. Click **Add**.
 
-    4. After the screen has updated with the newly created client secret copy the **VALUE** of the client secret and store it temporarily as you will need it later.
+   4. After the screen has updated with the newly created client secret copy the **VALUE** of the client secret and store it temporarily as you will need it later.
 
-        > **Important:** This secret string is never shown again, so make sure you copy it now.
-        > In production apps you should always use certificates as your application secrets, but for this sample we will use a simple shared secret password.
+      > **Important:** This secret string is never shown again, so make sure you copy it now.
+      > In production apps you should always use certificates as your application secrets, but for this sample we will use a simple shared secret password.
+
 8. Click **Authentication** from the current blade navigation pane.
-    1. Select 'ID tokens'
+   1. Select 'ID tokens'
 9. Click **API permissions** from the current blade navigation pane.
 
-    1. Click **Add a permission** from the current blade content.
-    2. On the **Request API permissions** panel select **Microsoft Graph**.
+   1. Click **Add a permission** from the current blade content.
+   2. On the **Request API permissions** panel select **Microsoft Graph**.
 
-    3. Select **Delegated permissions**.
-    1. In the "Select permissions" search box type "User".
-    2. Select **openid**, **email**, **profile**, **offline_access**, **User.Read**, **User.ReadBasic.All** and **Mail.Send**.
+   3. Select **Delegated permissions**.
+   4. In the "Select permissions" search box type "User".
+   5. Select **openid**, **email**, **profile**, **offline_access**, **User.Read**, **User.ReadBasic.All** and **Mail.Send**.
 
-    3. Click **Add permissions** at the bottom of flyout.
+   6. Click **Add permissions** at the bottom of flyout.
 
-    > **Note:** Microsoft recommends that you explicitly list all delegated permissions when registering your app. While the incremental and dynamic consent capabilities of the v2 endpoint make this step optional, failing to do so can negatively impact admin consent.
+   > **Note:** Microsoft recommends that you explicitly list all delegated permissions when registering your app. While the incremental and dynamic consent capabilities of the v2 endpoint make this step optional, failing to do so can negatively impact admin consent.
 
 ## Configure and run the sample
 
@@ -93,15 +94,15 @@ To use the Microsoft Graph Connect Sample for ASP.NET Core 2.1, you need the fol
 
 2. Open the **MicrosoftGraphAspNetCoreConnectSample.sln** sample file in Visual Studio 2017.
 
-3. In Solution Explorer, open the **appsettings.json** file in the root directory of the project.  
+3. In Solution Explorer, open the **appsettings.json** file in the root directory of the project.
 
-   a. For the **AppId** key, replace `ENTER_YOUR_APP_ID` with the application ID of your registered application.  
+   a. For the **AppId** key, replace `ENTER_YOUR_APP_ID` with the application ID of your registered application.
 
-   b. For the **AppSecret** key, replace `ENTER_YOUR_SECRET` with the password of your registered application. Note that in production apps you should always use certificates as your application secrets, but for this sample we will use a simple shared secret password.  
+   b. For the **AppSecret** key, replace `ENTER_YOUR_SECRET` with the password of your registered application. Note that in production apps you should always use certificates as your application secrets, but for this sample we will use a simple shared secret password.
 
 4. Press F5 to build and run the sample. This will restore NuGet package dependencies and open the app.
 
-   >If you see any errors while installing packages, make sure the local path where you placed the solution is not too long/deep. Moving the solution closer to the root of your drive resolves this issue.
+   > If you see any errors while installing packages, make sure the local path where you placed the solution is not too long/deep. Moving the solution closer to the root of your drive resolves this issue.
 
 5. Sign in with your personal (MSA) account or your work or school account and grant the requested permissions.
 
@@ -150,7 +151,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 We'd love to get your feedback about the Microsoft Graph Connect Sample for ASP.NET Core. You can send your questions and suggestions to us in the [Issues](https://github.com/microsoftgraph/aspnetcore-connect-sample/issues) section of this repository.
 
-Questions about Microsoft Graph in general should be posted to [Stack Overflow](https://stackoverflow.com/questions/tagged/MicrosoftGraph). Make sure that your questions or comments are tagged with *[MicrosoftGraph]*.
+Questions about Microsoft Graph in general should be posted to [Stack Overflow](https://stackoverflow.com/questions/tagged/MicrosoftGraph). Make sure that your questions or comments are tagged with _[MicrosoftGraph]_.
 
 You can suggest changes for Microsoft Graph on [UserVoice](https://officespdev.uservoice.com/).
 
