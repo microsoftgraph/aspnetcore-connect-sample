@@ -11,21 +11,13 @@ The sample uses only delegate permissions, therefore it does not require admin c
 
 ## Table of contents
 
-- [Microsoft Graph Connect Sample for ASP.NET Core 2.1](#microsoft-graph-connect-sample-for-aspnet-core-21)
-  - [Table of contents](#table-of-contents)
-  - [Differences between ADAL and MSAL](#differences-between-adal-and-msal)
-  - [Prerequisites](#prerequisites)
-  - [Register the app](#register-the-app)
-  - [Configure and run the sample](#configure-and-run-the-sample)
-  - [Key components of the sample](#key-components-of-the-sample)
-    - [Controllers](#controllers)
-    - [Views](#views)
-    - [Helpers](#helpers)
-  - [Important note about the MSAL Preview](#important-note-about-the-msal-preview)
-  - [Contributing](#contributing)
-  - [Questions and comments](#questions-and-comments)
-  - [Additional resources](#additional-resources)
-  - [Copyright](#copyright)
+- [Register the app](#register-the-app)
+- [Prerequisites](#prerequisites)
+- [Configure and run the sample](#configure-and-run-the-sample)
+- [Key components of the sample](#key-components-of-the-sample)
+- [Contributing](#contributing)
+- [Questions and comments](#questions-and-comments)
+- [Additional resources](#additional-resources)
 
 ## Differences between ADAL and MSAL
 
