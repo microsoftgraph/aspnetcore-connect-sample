@@ -9,7 +9,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Client;
 using Microsoft.Graph;
 using MicrosoftGraphAspNetCoreConnectSample.Extensions;
-using Microsoft.Identity.Client.AppConfig;
 
 namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
 {
