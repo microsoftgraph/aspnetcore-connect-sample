@@ -30,8 +30,12 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
                     .WithRedirectUri(azureOptions.BaseUrl + azureOptions.CallbackPath)
                     .Build();
 
+            Authority = _app.Authority;
+
             _scopes = azureOptions.GraphScopes.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
         }
+
+        public string Authority { get; }
 
         // Gets an access token. First tries to get the access token from the token cache.
         // Using password (secret) to authenticate. Production apps should use a certificate.
@@ -69,6 +73,8 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
 
     public interface IGraphAuthProvider
     {
+        string Authority { get; }
+
         Task<string> GetUserAccessTokenAsync(string userId);
 
         Task<AuthenticationResult> GetUserAccessTokenByAuthorizationCode(string authorizationCode);
