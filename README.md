@@ -130,7 +130,7 @@ The following files contain code that's related to connecting to Microsoft Graph
 
 ### Helpers
 
-- [`GraphAuthProvider.cs`](MicrosoftGraphAspNetCoreConnectSample/Helpers/GraphAuthProvider.cs) Gets an access token using MSAL's **AcquireTokenSilentAsync** method.
+- [`GraphAuthProvider.cs`](MicrosoftGraphAspNetCoreConnectSample/Helpers/GraphAuthProvider.cs) Gets an access token using MSAL's **AcquireTokenSilent** method.
 - [`GraphSdkHelper.cs`](MicrosoftGraphAspNetCoreConnectSample/Helpers/GraphSDKHelper.cs) Initiates the SDK client used to interact with Microsoft Graph.
 - [`GraphService.cs`](MicrosoftGraphAspNetCoreConnectSample/Helpers/GraphService.cs) Contains methods that use the **GraphServiceClient** to build and send calls to the Microsoft Graph service and to process the response.
   - The **GetUserJson** action gets the user's profile by an email address and converts it to JSON.
@@ -164,4 +164,4 @@ You can suggest changes for Microsoft Graph on [UserVoice](https://officespdev.u
 
 ## Copyright
 
-Copyright (c) 2018 Microsoft. All rights reserved.
+Copyright (c) 2019 Microsoft. All rights reserved.
