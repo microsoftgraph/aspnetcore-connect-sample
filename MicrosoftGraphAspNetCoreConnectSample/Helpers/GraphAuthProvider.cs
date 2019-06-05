@@ -9,7 +9,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Client;
 using Microsoft.Graph;
 using MicrosoftGraphAspNetCoreConnectSample.Extensions;
-using Microsoft.Identity.Client.AppConfig;
 
 namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
 {
@@ -50,7 +49,7 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
 
             try
             {
-                var result = await _app.AcquireTokenSilentAsync(_scopes, account);
+                var result = await _app.AcquireTokenSilent(_scopes, account).ExecuteAsync();
                 return result.AccessToken;
             }
 
