@@ -1,3 +1,19 @@
+---
+page_type: sample
+products:
+- ms-graph
+languages:
+- aspx
+- csharp
+extensions:
+  contentType: samples
+  technologies:
+  - Microsoft Graph
+  - Microsoft identity platform
+  services:
+  - Microsoft identity platform
+  createdDate: 8/6/2017 5:17:58 AM
+---
 # Microsoft Graph Connect Sample for ASP.NET Core 2.1
 
 ![Microsoft Graph Connect Sample for ASP.NET Core 2.1 screenshot](readme-images/Page1.PNG)
