@@ -1,5 +1,6 @@
 ---
 page_type: sample
+description: "Use ASP.NET Core 2.1 MVC to connect to Microsoft Graph using the delegated permissions flow."
 products:
 - ms-graph
 languages:
