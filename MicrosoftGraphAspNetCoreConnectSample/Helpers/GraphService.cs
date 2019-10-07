@@ -194,18 +194,21 @@ namespace MicrosoftGraphAspNetCoreConnectSample.Helpers
                 // Load user's profile picture.
                 var pictureStream = await GetMyPictureStream(graphClient, httpContext);
 
-                // Copy stream to MemoryStream object so that it can be converted to byte array.
-                var pictureMemoryStream = new MemoryStream();
-                await pictureStream.CopyToAsync(pictureMemoryStream);
-
-                // Convert stream to byte array and add as attachment.
-                attachments.Add(new FileAttachment
+                if (pictureStream != null)
                 {
-                    ODataType = "#microsoft.graph.fileAttachment",
-                    ContentBytes = pictureMemoryStream.ToArray(),
-                    ContentType = "image/png",
-                    Name = "me.png"
-                });
+                    // Copy stream to MemoryStream object so that it can be converted to byte array.
+                    var pictureMemoryStream = new MemoryStream();
+                    await pictureStream.CopyToAsync(pictureMemoryStream);
+
+                    // Convert stream to byte array and add as attachment.
+                    attachments.Add(new FileAttachment
+                    {
+                        ODataType = "#microsoft.graph.fileAttachment",
+                        ContentBytes = pictureMemoryStream.ToArray(),
+                        ContentType = "image/png",
+                        Name = "me.png"
+                    });
+                }
             }
             catch (Exception e)
             {
