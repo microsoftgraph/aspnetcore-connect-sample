@@ -1,6 +1,6 @@
 ---
 page_type: sample
-description: "Use ASP.NET Core 2.1 MVC to connect to Microsoft Graph using the delegated permissions flow."
+description: "Use ASP.NET Core 3.1 MVC to connect to Microsoft Graph using the delegated permissions flow."
 products:
 - ms-graph
 languages:
@@ -15,16 +15,16 @@ extensions:
   - Microsoft identity platform
   createdDate: 8/6/2017 5:17:58 AM
 ---
-# Microsoft Graph Connect Sample for ASP.NET Core 2.1
+# Microsoft Graph Connect Sample for ASP.NET Core 3.1
 
-![Microsoft Graph Connect Sample for ASP.NET Core 2.1 screenshot](readme-images/Page1.PNG)
+![Screenshot](readme-images/Page1.PNG)
 
-**Scenario**: Use ASP.NET Core 2.1 MVC to connect to Microsoft Graph using the delegated permissions flow to retrieve a user's profile, their photo from Azure AD (v2.0) endpoint and then send an email that contains the photo as attachment.
+**Scenario**: Use ASP.NET Core 3.1 MVC to connect to Microsoft Graph using the delegated permissions flow to retrieve a user's profile, their photo from Azure AD (v2.0) endpoint and then send an email that contains the photo as attachment.
 
 The sample uses OpenID Connect for sign in, [Microsoft Authentication Library (MSAL) for .NET](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet) to obtain an access token, and the [Microsoft Graph Client Library for .NET](https://github.com/microsoftgraph/msgraph-sdk-dotnet) (SDK) to interact with Microsoft Graph. The MSAL SDK provides features for working with the [Azure AD v2.0 endpoint](https://azure.microsoft.com/en-us/documentation/articles/active-directory-appmodel-v2-overview), which enables developers to write a single code flow that handles authentication for both work or school (Azure Active Directory) and personal (Microsoft) accounts.
 The sample uses only delegate permissions, therefore it does not require admin consent.
 
-> Previous version of this sample that uses ASP.NET Core 1.1 version is [here](https://github.com/microsoftgraph/aspnetcore-connect-sample/tree/netcore1.1) and the ASP.NET Core 2.0 version [here](https://github.com/microsoftgraph/aspnetcore-connect-sample/tree/netcore2.0).
+> Previous version of this sample that uses ASP.NET Core 1.1 version is [here](https://github.com/microsoftgraph/aspnetcore-connect-sample/tree/netcore1.1) and the ASP.NET Core 2.1 version [here](https://github.com/microsoftgraph/aspnetcore-connect-sample/tree/netcore2.1).
 
 ## Table of contents
 
@@ -42,9 +42,9 @@ ADAL (Azure AD v1.0) and MSAL (Azure AD v2.0) are both authentication libraries 
 
 ## Prerequisites
 
-To use the Microsoft Graph Connect Sample for ASP.NET Core 2.1, you need the following:
+To use the Microsoft Graph Connect Sample for ASP.NET Core 3.1, you need the following:
 
-- Visual Studio 2017 [with .NET Core 2.1 SDK](https://www.microsoft.com/net/download/core) installed on your development computer.
+- Visual Studio 2019 [with .NET Core 3.1 SDK](https://www.microsoft.com/net/download/core) installed on your development computer.
 - Either a [personal Microsoft account](https://signup.live.com) or a [work or school account](https://dev.office.com/devprogram). (You don't need to be an administrator of the tenant.)
 - The application ID and key from the application that you [register on the App Registration Portal](#register-the-app).
 
@@ -109,7 +109,7 @@ To use the Microsoft Graph Connect Sample for ASP.NET Core 2.1, you need the fol
 
 1. Download or clone the Microsoft Graph Connect Sample for ASP.NET Core.
 
-2. Open the **MicrosoftGraphAspNetCoreConnectSample.sln** sample file in Visual Studio 2017.
+2. Open the **MicrosoftGraphAspNetCoreConnectSample.sln** sample file in Visual Studio 2019.
 
 3. In Solution Explorer, open the **appsettings.json** file in the root directory of the project.
 
@@ -177,4 +177,4 @@ You can suggest changes for Microsoft Graph on [UserVoice](https://officespdev.u
 
 ## Copyright
 
-Copyright (c) 2019 Microsoft. All rights reserved.
+Copyright (c) 2020 Microsoft. All rights reserved.
