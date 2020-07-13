@@ -14,9 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MicrosoftGraphAspNetCoreConnectSample.Extensions;
-using MicrosoftGraphAspNetCoreConnectSample.Helpers;
-
-
+using MicrosoftGraphAspNetCoreConnectSample.Services;
 
 namespace MicrosoftGraphAspNetCoreConnectSample
 {
@@ -55,7 +53,7 @@ namespace MicrosoftGraphAspNetCoreConnectSample
 
             // Add application services.
             services.AddSingleton<IGraphAuthProvider, GraphAuthProvider>();
-            services.AddTransient<IGraphSdkHelper, GraphSdkHelper>();
+            services.AddSingleton<IGraphServiceClientFactory, GraphServiceClientFactory>();
 
             services.Configure<HstsOptions>(options =>
             {
@@ -81,9 +79,9 @@ namespace MicrosoftGraphAspNetCoreConnectSample
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-            app.UseAuthentication();
-
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHealthChecks("/healthcheck");
