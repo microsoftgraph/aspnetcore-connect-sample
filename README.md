@@ -1,21 +1,6 @@
----
-page_type: sample
-description: "Use ASP.NET Core 3.1 MVC to connect to Microsoft Graph using the delegated permissions flow."
-products:
-- ms-graph
-languages:
-- aspx
-- csharp
-extensions:
-  contentType: samples
-  technologies:
-  - Microsoft Graph
-  - Microsoft identity platform
-  services:
-  - Microsoft identity platform
-  createdDate: 8/6/2017 5:17:58 AM
----
-# Microsoft Graph Connect Sample for ASP.NET Core 3.1
+# [ARCHIVED] Microsoft Graph Connect Sample for ASP.NET Core 3.1
+
+**This sample has been archived and is no longer current. Please see [Microsoft Graph sample ASP.NET Core app](https://github.com/microsoftgraph/msgraph-sample-aspnet-core) for a current example of using ASP.NET Core with Microsoft Graph.**
 
 ![Screenshot](readme-images/Page1.PNG)
 
